@@ -74,7 +74,7 @@ Socket* OpenSSLSocketFactory::createSocket() {
 #ifdef HAVE_OPENSSL
         // Create a new SSL object for the Socket then create a new unconnected Socket.
         SSL_CTX* ctx = static_cast<SSL_CTX*>( this->parent->getOpenSSLCtx() );
-        std::auto_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
+        std::unique_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
         return new OpenSSLSocket( parameters.release() );
 #else
         return NULL;
@@ -93,8 +93,8 @@ Socket* OpenSSLSocketFactory::createSocket( const decaf::net::InetAddress* host,
 #ifdef HAVE_OPENSSL
         // Create a new SSL object for the Socket then create a new unconnected Socket.
         SSL_CTX* ctx = static_cast<SSL_CTX*>( this->parent->getOpenSSLCtx() );
-        std::auto_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
-        std::auto_ptr<SSLSocket> socket( new OpenSSLSocket( parameters.release(), host, port ) );
+        std::unique_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
+        std::unique_ptr<SSLSocket> socket( new OpenSSLSocket( parameters.release(), host, port ) );
         return socket.release();
 #else
         return NULL;
@@ -114,8 +114,8 @@ Socket* OpenSSLSocketFactory::createSocket( const decaf::net::InetAddress* host,
 #ifdef HAVE_OPENSSL
         // Create a new SSL object for the Socket then create a new unconnected Socket.
         SSL_CTX* ctx = static_cast<SSL_CTX*>( this->parent->getOpenSSLCtx() );
-        std::auto_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
-        std::auto_ptr<SSLSocket> socket(
+        std::unique_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
+        std::unique_ptr<SSLSocket> socket(
             new OpenSSLSocket( parameters.release(), host, port, ifAddress, localPort ) );
         return socket.release();
 #else
@@ -135,8 +135,8 @@ Socket* OpenSSLSocketFactory::createSocket( const std::string& hostname, int por
 #ifdef HAVE_OPENSSL
         // Create a new SSL object for the Socket then create a new unconnected Socket.
         SSL_CTX* ctx = static_cast<SSL_CTX*>( this->parent->getOpenSSLCtx() );
-        std::auto_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
-        std::auto_ptr<SSLSocket> socket( new OpenSSLSocket( parameters.release(), hostname, port ) );
+        std::unique_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
+        std::unique_ptr<SSLSocket> socket( new OpenSSLSocket( parameters.release(), hostname, port ) );
         return socket.release();
 #else
         return NULL;
@@ -156,8 +156,8 @@ Socket* OpenSSLSocketFactory::createSocket( const std::string& hostname, int por
 #ifdef HAVE_OPENSSL
         // Create a new SSL object for the Socket then create a new unconnected Socket.
         SSL_CTX* ctx = static_cast<SSL_CTX*>( this->parent->getOpenSSLCtx() );
-        std::auto_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
-        std::auto_ptr<SSLSocket> socket(
+        std::unique_ptr<OpenSSLParameters> parameters( new OpenSSLParameters( ctx ) );
+        std::unique_ptr<SSLSocket> socket(
             new OpenSSLSocket( parameters.release(), hostname, port, ifAddress, localPort ) );
         return socket.release();
 #else

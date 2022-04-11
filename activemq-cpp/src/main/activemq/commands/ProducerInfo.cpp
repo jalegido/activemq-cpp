@@ -49,7 +49,7 @@ ProducerInfo::~ProducerInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ProducerInfo* ProducerInfo::cloneDataStructure() const {
-    std::auto_ptr<ProducerInfo> producerInfo(new ProducerInfo());
+    std::unique_ptr<ProducerInfo> producerInfo(new ProducerInfo());
 
     // Copy the data from the base class or classes
     producerInfo->copyDataStructure(this);

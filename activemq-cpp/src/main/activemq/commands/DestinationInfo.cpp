@@ -49,7 +49,7 @@ DestinationInfo::~DestinationInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 DestinationInfo* DestinationInfo::cloneDataStructure() const {
-    std::auto_ptr<DestinationInfo> destinationInfo(new DestinationInfo());
+    std::unique_ptr<DestinationInfo> destinationInfo(new DestinationInfo());
 
     // Copy the data from the base class or classes
     destinationInfo->copyDataStructure(this);

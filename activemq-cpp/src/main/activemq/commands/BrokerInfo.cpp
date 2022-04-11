@@ -51,7 +51,7 @@ BrokerInfo::~BrokerInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 BrokerInfo* BrokerInfo::cloneDataStructure() const {
-    std::auto_ptr<BrokerInfo> brokerInfo(new BrokerInfo());
+    std::unique_ptr<BrokerInfo> brokerInfo(new BrokerInfo());
 
     // Copy the data from the base class or classes
     brokerInfo->copyDataStructure(this);

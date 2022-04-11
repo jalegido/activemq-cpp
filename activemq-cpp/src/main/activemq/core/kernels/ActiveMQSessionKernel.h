@@ -97,7 +97,7 @@ namespace kernels {
         /**
          * Sends incoming messages to the registered consumers.
          */
-        std::auto_ptr<ActiveMQSessionExecutor> executor;
+        std::unique_ptr<ActiveMQSessionExecutor> executor;
 
         /**
          * This Sessions Acknowledgment mode.

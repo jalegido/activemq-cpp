@@ -104,8 +104,8 @@ namespace core{
 
         cms::ExceptionListener* defaultListener;
         cms::MessageTransformer* defaultTransformer;
-        std::auto_ptr<PrefetchPolicy> defaultPrefetchPolicy;
-        std::auto_ptr<RedeliveryPolicy> defaultRedeliveryPolicy;
+        std::unique_ptr<PrefetchPolicy> defaultPrefetchPolicy;
+        std::unique_ptr<RedeliveryPolicy> defaultRedeliveryPolicy;
 
         FactorySettings() : configLock(),
                             properties(new Properties()),
@@ -317,7 +317,7 @@ cms::Connection* ActiveMQConnectionFactory::doCreateConnection(const decaf::net:
                                                                const std::string& clientId) {
 
     Pointer<Transport> transport;
-    auto_ptr<ActiveMQConnection> connection;
+    unique_ptr<ActiveMQConnection> connection;
 
     try {
 

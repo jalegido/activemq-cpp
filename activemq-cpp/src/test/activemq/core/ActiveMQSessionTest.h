@@ -70,7 +70,7 @@ namespace core{
             }
         };
 
-        std::auto_ptr<ActiveMQConnection> connection;
+        std::unique_ptr<ActiveMQConnection> connection;
         transport::mock::MockTransport* dTransport;
         MyExceptionListener exListener;
 

@@ -49,7 +49,7 @@ ExceptionResponse::~ExceptionResponse() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ExceptionResponse* ExceptionResponse::cloneDataStructure() const {
-    std::auto_ptr<ExceptionResponse> exceptionResponse(new ExceptionResponse());
+    std::unique_ptr<ExceptionResponse> exceptionResponse(new ExceptionResponse());
 
     // Copy the data from the base class or classes
     exceptionResponse->copyDataStructure(this);

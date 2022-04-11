@@ -82,7 +82,7 @@ void SlowListenerTest::testSlowListener() {
             consumers[i]->setMessageListener(&listener);
         }
 
-        auto_ptr<cms::BytesMessage> message(session->createBytesMessage());
+        unique_ptr<cms::BytesMessage> message(session->createBytesMessage());
 
         unsigned int msgCount = 50;
         for (unsigned int i = 0; i < msgCount; i++) {

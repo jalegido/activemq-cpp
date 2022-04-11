@@ -93,7 +93,7 @@ unsigned char ActiveMQBytesMessage::getDataStructureType() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 ActiveMQBytesMessage* ActiveMQBytesMessage::cloneDataStructure() const {
-    std::auto_ptr<ActiveMQBytesMessage> message( new ActiveMQBytesMessage() );
+    std::unique_ptr<ActiveMQBytesMessage> message( new ActiveMQBytesMessage() );
     message->copyDataStructure( this );
     return message.release();
 }

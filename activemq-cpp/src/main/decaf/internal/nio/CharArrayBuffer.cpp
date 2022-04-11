@@ -311,7 +311,7 @@ CharSequence* CharArrayBuffer::subSequence( int start, int end ) const {
                 "CharArrayBuffer::subSequence - Sequence exceed limit" );
         }
 
-        std::auto_ptr<CharArrayBuffer> buffer( new CharArrayBuffer( *this ) );
+        std::unique_ptr<CharArrayBuffer> buffer( new CharArrayBuffer( *this ) );
         buffer->position( this->position() + start );
         buffer->limit( this->position() + end );
 

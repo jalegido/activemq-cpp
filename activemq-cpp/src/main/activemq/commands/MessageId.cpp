@@ -92,7 +92,7 @@ MessageId::~MessageId() {
 
 ////////////////////////////////////////////////////////////////////////////////
 MessageId* MessageId::cloneDataStructure() const {
-    std::auto_ptr<MessageId> messageId(new MessageId());
+    std::unique_ptr<MessageId> messageId(new MessageId());
 
     // Copy the data from the base class or classes
     messageId->copyDataStructure(this);

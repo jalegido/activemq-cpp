@@ -49,7 +49,7 @@ JournalTransaction::~JournalTransaction() {
 
 ////////////////////////////////////////////////////////////////////////////////
 JournalTransaction* JournalTransaction::cloneDataStructure() const {
-    std::auto_ptr<JournalTransaction> journalTransaction(new JournalTransaction());
+    std::unique_ptr<JournalTransaction> journalTransaction(new JournalTransaction());
 
     // Copy the data from the base class or classes
     journalTransaction->copyDataStructure(this);

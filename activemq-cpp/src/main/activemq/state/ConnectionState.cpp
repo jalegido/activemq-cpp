@@ -87,7 +87,7 @@ void ConnectionState::checkShutdown() const {
 ////////////////////////////////////////////////////////////////////////////////
 void ConnectionState::removeTempDestination(Pointer<ActiveMQDestination> destination) {
 
-    std::auto_ptr<decaf::util::Iterator<Pointer<DestinationInfo> > > iter(tempDestinations.iterator());
+    std::unique_ptr<decaf::util::Iterator<Pointer<DestinationInfo> > > iter(tempDestinations.iterator());
 
     while (iter->hasNext()) {
         Pointer<DestinationInfo> di = iter->next();

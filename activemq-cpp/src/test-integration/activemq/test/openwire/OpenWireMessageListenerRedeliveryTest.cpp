@@ -240,13 +240,13 @@ OpenWireMessageListenerRedeliveryTest::~OpenWireMessageListenerRedeliveryTest() 
 ////////////////////////////////////////////////////////////////////////////////
 void OpenWireMessageListenerRedeliveryTest::testQueueRollbackConsumerListener() {
 
-    std::auto_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
+    std::unique_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
-    std::auto_ptr<Queue> queue(session->createQueue("testQueueRollbackConsumerListener"));
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<Message> message(session->createTextMessage("Hello"));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
+    std::unique_ptr<Queue> queue(session->createQueue("testQueueRollbackConsumerListener"));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Message> message(session->createTextMessage("Hello"));
 
     ActiveMQConnection* amqConnection = dynamic_cast<ActiveMQConnection*>(connection.get());
     amqConnection->destroyDestination(queue.get());
@@ -255,7 +255,7 @@ void OpenWireMessageListenerRedeliveryTest::testQueueRollbackConsumerListener() 
     producer->send(message.get());
     session->commit();
 
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
 
     TestMessageListener listener(session.get());
     consumer->setMessageListener(&listener);
@@ -276,7 +276,7 @@ void OpenWireMessageListenerRedeliveryTest::testQueueRollbackConsumerListener() 
     CPPUNIT_ASSERT_EQUAL(4, listener.getCounter());
 
     // create new message
-    std::auto_ptr<Message> secondMessage(session->createTextMessage("Hello 2"));
+    std::unique_ptr<Message> secondMessage(session->createTextMessage("Hello 2"));
     producer->send(secondMessage.get());
     session->commit();
 
@@ -296,14 +296,14 @@ void OpenWireMessageListenerRedeliveryTest::testQueueRollbackConsumerListener() 
 ////////////////////////////////////////////////////////////////////////////////
 void OpenWireMessageListenerRedeliveryTest::testQueueSessionListenerExceptionRetry() {
 
-    std::auto_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
+    std::unique_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
-    std::auto_ptr<Queue> queue(session->createQueue("testQueueSessionListenerExceptionRetry"));
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<Message> message1(session->createTextMessage("1"));
-    std::auto_ptr<Message> message2(session->createTextMessage("2"));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<Queue> queue(session->createQueue("testQueueSessionListenerExceptionRetry"));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Message> message1(session->createTextMessage("1"));
+    std::unique_ptr<Message> message2(session->createTextMessage("2"));
 
     ActiveMQConnection* amqConnection = dynamic_cast<ActiveMQConnection*>(connection.get());
     amqConnection->destroyDestination(queue.get());
@@ -312,7 +312,7 @@ void OpenWireMessageListenerRedeliveryTest::testQueueSessionListenerExceptionRet
     producer->send(message1.get());
     producer->send(message2.get());
 
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
 
     int maxDeliveries = amqConnection->getRedeliveryPolicy()->getMaximumRedeliveries();
 
@@ -339,31 +339,31 @@ void OpenWireMessageListenerRedeliveryTest::testQueueSessionListenerExceptionDlq
 
     const std::string TEST_NAME = "testQueueSessionListenerExceptionDlq";
 
-    std::auto_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
+    std::unique_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
-    std::auto_ptr<Queue> queue(session->createQueue(TEST_NAME));
-    std::auto_ptr<Queue> dlq(session->createQueue("ActiveMQ.DLQ"));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<Queue> queue(session->createQueue(TEST_NAME));
+    std::unique_ptr<Queue> dlq(session->createQueue("ActiveMQ.DLQ"));
 
     ActiveMQConnection* amqConnection = dynamic_cast<ActiveMQConnection*>(connection.get());
     amqConnection->destroyDestination(queue.get());
     amqConnection->destroyDestination(dlq.get());
 
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<Message> message(session->createTextMessage("1"));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Message> message(session->createTextMessage("1"));
     producer->setDeliveryMode(cms::DeliveryMode::PERSISTENT);
     producer->send(message.get());
 
     // Track messages going to DLQ
     TrackingMessageListener dlqListener(TEST_NAME);
-    std::auto_ptr<MessageConsumer> dlqConsumer(session->createConsumer(dlq.get()));
+    std::unique_ptr<MessageConsumer> dlqConsumer(session->createConsumer(dlq.get()));
     dlqConsumer->setMessageListener(&dlqListener);
 
     // Receive and throw
     int maxDeliveries = amqConnection->getRedeliveryPolicy()->getMaximumRedeliveries();
     FailingMessageListener listener(session.get(), TEST_NAME, maxDeliveries);
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
     consumer->setMessageListener(&listener);
 
     CPPUNIT_ASSERT_MESSAGE("got message before retry expiry", listener.await(20, TimeUnit::SECONDS));
@@ -389,32 +389,32 @@ void OpenWireMessageListenerRedeliveryTest::testTransactedQueueSessionListenerEx
 
     const std::string TEST_NAME = "testTransactedQueueSessionListenerExceptionDlq";
 
-    std::auto_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
+    std::unique_ptr<cms::Connection> connection(createConnection(getBrokerURL()));
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
-    std::auto_ptr<Queue> queue(session->createQueue(TEST_NAME));
-    std::auto_ptr<Queue> dlq(session->createQueue("ActiveMQ.DLQ"));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
+    std::unique_ptr<Queue> queue(session->createQueue(TEST_NAME));
+    std::unique_ptr<Queue> dlq(session->createQueue("ActiveMQ.DLQ"));
 
     ActiveMQConnection* amqConnection = dynamic_cast<ActiveMQConnection*>(connection.get());
     amqConnection->destroyDestination(queue.get());
     amqConnection->destroyDestination(dlq.get());
 
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<Message> message(session->createTextMessage("1"));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Message> message(session->createTextMessage("1"));
     producer->setDeliveryMode(cms::DeliveryMode::PERSISTENT);
     producer->send(message.get());
     session->commit();
 
     // Track messages going to DLQ
     TrackingMessageListener dlqListener(TEST_NAME);
-    std::auto_ptr<MessageConsumer> dlqConsumer(session->createConsumer(dlq.get()));
+    std::unique_ptr<MessageConsumer> dlqConsumer(session->createConsumer(dlq.get()));
     dlqConsumer->setMessageListener(&dlqListener);
 
     // Receive and throw
     int maxDeliveries = amqConnection->getRedeliveryPolicy()->getMaximumRedeliveries();
     FailingMessageListener listener(session.get(), TEST_NAME, maxDeliveries);
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
     consumer->setMessageListener(&listener);
 
     CPPUNIT_ASSERT_MESSAGE("got message before retry expiry", listener.await(20, TimeUnit::SECONDS));

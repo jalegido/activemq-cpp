@@ -77,7 +77,7 @@ void DedicatedTaskRunnerTest::testSimple() {
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should throw a NullPointerException",
-        std::auto_ptr<TaskRunner>( new DedicatedTaskRunner( NULL ) ),
+        std::unique_ptr<TaskRunner>( new DedicatedTaskRunner( NULL ) ),
         NullPointerException );
 
     SimpleCountingTask simpleTask;

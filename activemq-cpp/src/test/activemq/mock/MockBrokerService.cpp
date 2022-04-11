@@ -126,7 +126,7 @@ namespace mock {
 
                     server.reset(new ServerSocket(configuredPort));
 
-                    std::auto_ptr<Socket> socket;
+                    std::unique_ptr<Socket> socket;
                     try {
                         socket.reset(server->accept());
                     } catch (IOException& ioe) {

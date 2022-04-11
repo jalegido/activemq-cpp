@@ -49,8 +49,8 @@ void AsyncSenderTest::testAsyncSends() {
         cms::MessageProducer* producer = cmsProvider->getProducer();
         producer->setDeliveryMode( DeliveryMode::NON_PERSISTENT );
 
-        auto_ptr<cms::TextMessage> txtMessage( session->createTextMessage( "TEST MESSAGE" ) );
-        auto_ptr<cms::BytesMessage> bytesMessage( session->createBytesMessage() );
+        unique_ptr<cms::TextMessage> txtMessage( session->createTextMessage( "TEST MESSAGE" ) );
+        unique_ptr<cms::BytesMessage> bytesMessage( session->createBytesMessage() );
 
         for( unsigned int i = 0; i < IntegrationCommon::defaultMsgCount; ++i ) {
             producer->send( txtMessage.get() );

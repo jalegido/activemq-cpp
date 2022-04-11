@@ -131,14 +131,14 @@ void OpenwireEnhancedConnectionTest::testDestinationSourceGetters() {
 
     TestDestinationListener listener;
 
-    std::auto_ptr<ConnectionFactory> factory(
+    std::unique_ptr<ConnectionFactory> factory(
         ConnectionFactory::createCMSConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<Connection> connection( factory->createConnection() );
+    std::unique_ptr<Connection> connection( factory->createConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<Session> session( connection->createSession() );
+    std::unique_ptr<Session> session( connection->createSession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
     ActiveMQConnection* amq = dynamic_cast<ActiveMQConnection*>(connection.get());
@@ -147,7 +147,7 @@ void OpenwireEnhancedConnectionTest::testDestinationSourceGetters() {
     cms::EnhancedConnection* enhanced = dynamic_cast<cms::EnhancedConnection*>(connection.get());
     CPPUNIT_ASSERT(enhanced != NULL);
 
-    std::auto_ptr<cms::DestinationSource> source(enhanced->getDestinationSource());
+    std::unique_ptr<cms::DestinationSource> source(enhanced->getDestinationSource());
     CPPUNIT_ASSERT(source.get() != NULL);
 
     source->setListener(&listener);
@@ -162,16 +162,16 @@ void OpenwireEnhancedConnectionTest::testDestinationSourceGetters() {
     int currentTempQueueCount = listener.tempQueueCount;
     int currentTempTopicCount = listener.tempTopicCount;
 
-    std::auto_ptr<Destination> destination1(session->createTopic(UUID::randomUUID().toString()));
-    std::auto_ptr<MessageConsumer> consumer1(session->createConsumer(destination1.get()));
-    std::auto_ptr<Destination> destination2(session->createQueue(UUID::randomUUID().toString()) );
-    std::auto_ptr<MessageConsumer> consumer2(session->createConsumer(destination2.get()));
+    std::unique_ptr<Destination> destination1(session->createTopic(UUID::randomUUID().toString()));
+    std::unique_ptr<MessageConsumer> consumer1(session->createConsumer(destination1.get()));
+    std::unique_ptr<Destination> destination2(session->createQueue(UUID::randomUUID().toString()) );
+    std::unique_ptr<MessageConsumer> consumer2(session->createConsumer(destination2.get()));
 
     consumer1->close();
     consumer2->close();
 
-    std::auto_ptr<Destination> destination3( session->createTemporaryQueue() );
-    std::auto_ptr<Destination> destination4( session->createTemporaryTopic() );
+    std::unique_ptr<Destination> destination3( session->createTemporaryQueue() );
+    std::unique_ptr<Destination> destination4( session->createTemporaryTopic() );
 
     TimeUnit::SECONDS.sleep(2);
 
@@ -190,8 +190,8 @@ void OpenwireEnhancedConnectionTest::testDestinationSourceGetters() {
 
     source->stop();
 
-    std::auto_ptr<Destination> destination5( session->createTemporaryQueue() );
-    std::auto_ptr<Destination> destination6( session->createTemporaryTopic() );
+    std::unique_ptr<Destination> destination5( session->createTemporaryQueue() );
+    std::unique_ptr<Destination> destination6( session->createTemporaryTopic() );
 
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Temp Queue Counts shouldn't change", currentTempQueueCount + 1, listener.tempQueueCount);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("Temp Topic Counts shouldn't change", currentTempTopicCount + 1, listener.tempTopicCount);
@@ -199,8 +199,8 @@ void OpenwireEnhancedConnectionTest::testDestinationSourceGetters() {
     listener.reset();
     source->start();
 
-    std::auto_ptr<Destination> destination7( session->createTemporaryQueue() );
-    std::auto_ptr<Destination> destination8( session->createTemporaryTopic() );
+    std::unique_ptr<Destination> destination7( session->createTemporaryQueue() );
+    std::unique_ptr<Destination> destination8( session->createTemporaryTopic() );
 
     TimeUnit::SECONDS.sleep(2);
 
@@ -218,14 +218,14 @@ void OpenwireEnhancedConnectionTest::testDestinationSource() {
 
     TestDestinationListener listener;
 
-    std::auto_ptr<ConnectionFactory> factory(
+    std::unique_ptr<ConnectionFactory> factory(
         ConnectionFactory::createCMSConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<Connection> connection( factory->createConnection() );
+    std::unique_ptr<Connection> connection( factory->createConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<Session> session( connection->createSession() );
+    std::unique_ptr<Session> session( connection->createSession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
     ActiveMQConnection* amq = dynamic_cast<ActiveMQConnection*>(connection.get());
@@ -234,7 +234,7 @@ void OpenwireEnhancedConnectionTest::testDestinationSource() {
     cms::EnhancedConnection* enhanced = dynamic_cast<cms::EnhancedConnection*>(connection.get());
     CPPUNIT_ASSERT(enhanced != NULL);
 
-    std::auto_ptr<cms::DestinationSource> source(enhanced->getDestinationSource());
+    std::unique_ptr<cms::DestinationSource> source(enhanced->getDestinationSource());
     CPPUNIT_ASSERT(source.get() != NULL);
 
     source->setListener(&listener);
@@ -247,12 +247,12 @@ void OpenwireEnhancedConnectionTest::testDestinationSource() {
     int currTempQueueCount = (int)source->getTemporaryQueues().size();
     int currTempTopicCount = (int)source->getTemporaryTopics().size();
 
-    std::auto_ptr<Destination> destination1(session->createTemporaryQueue());
-    std::auto_ptr<Destination> destination2(session->createTemporaryTopic());
-    std::auto_ptr<Destination> destination3(session->createTemporaryQueue());
-    std::auto_ptr<Destination> destination4(session->createTemporaryTopic());
-    std::auto_ptr<Destination> destination5(session->createTemporaryQueue());
-    std::auto_ptr<Destination> destination6(session->createTemporaryTopic());
+    std::unique_ptr<Destination> destination1(session->createTemporaryQueue());
+    std::unique_ptr<Destination> destination2(session->createTemporaryTopic());
+    std::unique_ptr<Destination> destination3(session->createTemporaryQueue());
+    std::unique_ptr<Destination> destination4(session->createTemporaryTopic());
+    std::unique_ptr<Destination> destination5(session->createTemporaryQueue());
+    std::unique_ptr<Destination> destination6(session->createTemporaryTopic());
 
     TimeUnit::SECONDS.sleep(2);
 

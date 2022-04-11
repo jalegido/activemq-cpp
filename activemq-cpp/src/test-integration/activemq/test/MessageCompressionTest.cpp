@@ -90,7 +90,7 @@ void MessageCompressionTest::testTextMessageCompression() {
 
     Session* session = this->cmsProvider->getSession();
 
-    std::auto_ptr<TextMessage> sent( session->createTextMessage( TEXT ) );
+    std::unique_ptr<TextMessage> sent( session->createTextMessage( TEXT ) );
 
     cms::MessageConsumer* consumer = cmsProvider->getConsumer();
     cms::MessageProducer* producer = cmsProvider->getProducer();
@@ -99,7 +99,7 @@ void MessageCompressionTest::testTextMessageCompression() {
     // Send some text messages
     producer->send( sent.get() );
 
-    auto_ptr<cms::Message> message( consumer->receive( 2000 ) );
+    unique_ptr<cms::Message> message( consumer->receive( 2000 ) );
     CPPUNIT_ASSERT( message.get() != NULL );
 
     TextMessage* recvd = dynamic_cast<TextMessage*>( message.get() );
@@ -124,7 +124,7 @@ void MessageCompressionTest::testBytesMessageCompression() {
 
     Session* session = this->cmsProvider->getSession();
 
-    std::auto_ptr<BytesMessage> sent( session->createBytesMessage() );
+    std::unique_ptr<BytesMessage> sent( session->createBytesMessage() );
 
     cms::MessageConsumer* consumer = cmsProvider->getConsumer();
     cms::MessageProducer* producer = cmsProvider->getProducer();
@@ -148,7 +148,7 @@ void MessageCompressionTest::testBytesMessageCompression() {
     // Send some text messages
     producer->send( sent.get() );
 
-    auto_ptr<cms::Message> message( consumer->receive( 2000 ) );
+    unique_ptr<cms::Message> message( consumer->receive( 2000 ) );
     CPPUNIT_ASSERT( message.get() != NULL );
 
     BytesMessage* recvd = dynamic_cast<BytesMessage*>( message.get() );
@@ -185,7 +185,7 @@ void MessageCompressionTest::testStreamMessageCompression() {
 
     Session* session = this->cmsProvider->getSession();
 
-    std::auto_ptr<StreamMessage> sent( session->createStreamMessage() );
+    std::unique_ptr<StreamMessage> sent( session->createStreamMessage() );
 
     cms::MessageConsumer* consumer = cmsProvider->getConsumer();
     cms::MessageProducer* producer = cmsProvider->getProducer();
@@ -209,7 +209,7 @@ void MessageCompressionTest::testStreamMessageCompression() {
     // Send some text messages
     producer->send( sent.get() );
 
-    auto_ptr<cms::Message> message( consumer->receive( 2000 ) );
+    unique_ptr<cms::Message> message( consumer->receive( 2000 ) );
     CPPUNIT_ASSERT( message.get() != NULL );
 
     StreamMessage* recvd = dynamic_cast<StreamMessage*>( message.get() );
@@ -246,7 +246,7 @@ void MessageCompressionTest::testMapMessageCompression() {
 
     Session* session = this->cmsProvider->getSession();
 
-    std::auto_ptr<MapMessage> sent( session->createMapMessage() );
+    std::unique_ptr<MapMessage> sent( session->createMapMessage() );
 
     cms::MessageConsumer* consumer = cmsProvider->getConsumer();
     cms::MessageProducer* producer = cmsProvider->getProducer();
@@ -270,7 +270,7 @@ void MessageCompressionTest::testMapMessageCompression() {
     // Send some text messages
     producer->send( sent.get() );
 
-    auto_ptr<cms::Message> message( consumer->receive( 2000 ) );
+    unique_ptr<cms::Message> message( consumer->receive( 2000 ) );
     CPPUNIT_ASSERT( message.get() != NULL );
 
     MapMessage* recvd = dynamic_cast<MapMessage*>( message.get() );

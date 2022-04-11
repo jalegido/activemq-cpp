@@ -82,8 +82,8 @@ namespace commands{
         bool readOnlyMessage;
         decaf::lang::Pointer<commands::MessageId> cmsMessageId;
         std::string cmsCorrelationID;
-        std::auto_ptr<commands::ActiveMQTopic> cmsDestination;
-        std::auto_ptr<commands::ActiveMQTempTopic> cmsReplyTo;
+        std::unique_ptr<commands::ActiveMQTopic> cmsDestination;
+        std::unique_ptr<commands::ActiveMQTempTopic> cmsReplyTo;
         int cmsDeliveryMode;
         bool cmsRedelivered;
         std::string cmsType;

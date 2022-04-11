@@ -219,7 +219,7 @@ void SocketTest::testIsConnected() {
     ServerSocket server(0);
     Socket client( "localhost", server.getLocalPort() );
 
-    std::auto_ptr<Socket> worker( server.accept() );
+    std::unique_ptr<Socket> worker( server.accept() );
 
     CPPUNIT_ASSERT_MESSAGE( "Socket indicated  not connected when it should be",
                             client.isConnected() );
@@ -235,7 +235,7 @@ void SocketTest::testIsClosed() {
     ServerSocket server(0);
     Socket client( "localhost", server.getLocalPort() );
 
-    std::auto_ptr<Socket> worker( server.accept() );
+    std::unique_ptr<Socket> worker( server.accept() );
 
     // validate isClosed returns expected values
     CPPUNIT_ASSERT_MESSAGE( "Socket should indicate it is not closed(1):",
@@ -266,7 +266,7 @@ void SocketTest::testIsInputShutdown() {
     ServerSocket server(0);
     Socket client( "localhost", server.getLocalPort() );
 
-    std::auto_ptr<Socket> worker( server.accept() );
+    std::unique_ptr<Socket> worker( server.accept() );
 
     InputStream* theInput = client.getInputStream();
     OutputStream* theOutput = worker->getOutputStream();
@@ -300,7 +300,7 @@ void SocketTest::testIsOutputShutdown() {
     ServerSocket server(0);
     Socket client( "localhost", server.getLocalPort() );
 
-    std::auto_ptr<Socket> worker( server.accept() );
+    std::unique_ptr<Socket> worker( server.accept() );
 
     InputStream* theInput = client.getInputStream();
     OutputStream* theOutput = worker->getOutputStream();
@@ -349,7 +349,7 @@ namespace {
         virtual void run() {
 
             try {
-                std::auto_ptr<Socket> worker( server->accept() );
+                std::unique_ptr<Socket> worker( server->accept() );
                 server->close();
                 InputStream* in = worker->getInputStream();
                 in->read();
@@ -442,7 +442,7 @@ void SocketTest::testGetOutputStream() {
         // Test for exception on get when socket has its output shutdown.
         ServerSocket ss2(0);
         Socket s( "127.0.0.1", ss2.getLocalPort() );
-        std::auto_ptr<Socket> worker( ss2.accept() );
+        std::unique_ptr<Socket> worker( ss2.accept() );
         s.shutdownOutput();
 
         CPPUNIT_ASSERT_THROW_MESSAGE(
@@ -463,7 +463,7 @@ namespace {
         bool done;
         int numClients;
         std::string lastMessage;
-        std::auto_ptr<ServerSocket> server;
+        std::unique_ptr<ServerSocket> server;
 
     public:
 
@@ -503,7 +503,7 @@ namespace {
             try{
                 unsigned char buf[1000];
 
-                std::auto_ptr<Socket> socket( server->accept() );
+                std::unique_ptr<Socket> socket( server->accept() );
                 server->close();
 
                 //socket->setSoTimeout( 10 );
@@ -573,8 +573,8 @@ void SocketTest::testConnect() {
 
         Thread::sleep( 100 );
 
-        std::auto_ptr<SocketFactory> factory( SocketFactory::getDefault() );
-        std::auto_ptr<Socket> client( factory->createSocket() );
+        std::unique_ptr<SocketFactory> factory( SocketFactory::getDefault() );
+        std::unique_ptr<Socket> client( factory->createSocket() );
 
         client->connect( "127.0.0.1", serverThread.getLocalPort() );
         client->setSoLinger( false, 0 );
@@ -619,7 +619,7 @@ void SocketTest::testTx() {
         Thread::sleep( 100 );
 
         SocketFactory* factory = SocketFactory::getDefault();
-        std::auto_ptr<Socket> client( factory->createSocket() );
+        std::unique_ptr<Socket> client( factory->createSocket() );
 
         client->connect("127.0.0.1", serverThread.getLocalPort() );
         client->setSoLinger( false, 0 );
@@ -675,7 +675,7 @@ void SocketTest::testTrx() {
         Thread::sleep( 100 );
 
         SocketFactory* factory = SocketFactory::getDefault();
-        std::auto_ptr<Socket> client( factory->createSocket() );
+        std::unique_ptr<Socket> client( factory->createSocket() );
 
         client->connect( "127.0.0.1", serverThread.getLocalPort() );
         client->setSoLinger( false, 0 );
@@ -729,7 +729,7 @@ void SocketTest::testRxFail() {
         Thread::sleep( 100 );
 
         SocketFactory* factory = SocketFactory::getDefault();
-        std::auto_ptr<Socket> client( factory->createSocket() );
+        std::unique_ptr<Socket> client( factory->createSocket() );
 
         client->connect("127.0.0.1", serverThread.getLocalPort() );
         client->setSoLinger( false, 0 );
@@ -778,7 +778,7 @@ void SocketTest::testTrxNoDelay() {
         Thread::sleep( 10 );
 
         SocketFactory* factory = SocketFactory::getDefault();
-        std::auto_ptr<Socket> client( factory->createSocket() );
+        std::unique_ptr<Socket> client( factory->createSocket() );
 
         client->connect("127.0.0.1", serverThread.getLocalPort() );
         client->setSoLinger( false, 0 );

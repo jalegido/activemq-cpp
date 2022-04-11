@@ -142,7 +142,7 @@ namespace concurrent {
                 return false;
             }
 
-            std::auto_ptr<Iterator<E> > setIter(asSet->iterator());
+            std::unique_ptr<Iterator<E> > setIter(asSet->iterator());
 
             // Use a single snapshot of underlying array
             CopyOnWriteArrayList<E> array(this->array);

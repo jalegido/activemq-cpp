@@ -72,7 +72,7 @@ namespace kernels {
         bool closed;
 
         // Memory Usage Class, created only if the Producer is tracking its usage.
-        std::auto_ptr<util::MemoryUsage> memoryUsage;
+        std::unique_ptr<util::MemoryUsage> memoryUsage;
 
         // The Destination assigned at creation, NULL if not assigned.
         Pointer<cms::Destination> destination;

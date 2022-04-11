@@ -36,7 +36,7 @@ int main( int argc AMQCPP_UNUSED, char **argv AMQCPP_UNUSED ) {
 
     std::ofstream outputFile;
     bool useXMLOutputter = false;
-    std::auto_ptr<CppUnit::TestListener> listener( new CppUnit::BriefTestProgressListener );
+    std::unique_ptr<CppUnit::TestListener> listener( new CppUnit::BriefTestProgressListener );
 
     if( argc > 1 ) {
         for( int i = 1; i < argc; ++i ) {

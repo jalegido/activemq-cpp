@@ -180,7 +180,7 @@ namespace lang {
         /**
          * Gets the real pointer that is contained within this Pointer.  This is
          * not really safe since the caller could delete or alter the pointer but
-         * it mimics the STL auto_ptr and gives access in cases where the caller
+         * it mimics the STL unique_ptr and gives access in cases where the caller
          * absolutely needs the real Pointer.  Use at your own risk.
          *
          * @return the contained pointer.

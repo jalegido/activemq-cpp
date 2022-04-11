@@ -41,7 +41,7 @@ unsigned char ActiveMQTempTopic::getDataStructureType() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 ActiveMQTempTopic* ActiveMQTempTopic::cloneDataStructure() const {
-    std::auto_ptr<ActiveMQTempTopic> copy(new ActiveMQTempTopic());
+    std::unique_ptr<ActiveMQTempTopic> copy(new ActiveMQTempTopic());
     copy->copyDataStructure(this);
     copy->connection = this->connection;
     copy->connectionId = this->connectionId;

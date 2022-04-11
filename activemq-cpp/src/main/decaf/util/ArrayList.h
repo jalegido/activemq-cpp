@@ -56,7 +56,7 @@ namespace util {
             this->capacity = collection.size() + (collection.size() / 10);
             this->elements = new E[this->capacity];
 
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 this->elements[this->head++] = iter->next();
                 this->curSize++;
@@ -69,7 +69,7 @@ namespace util {
             this->capacity = arrayList.size() + (arrayList.size() / 10);
             this->elements = new E[this->capacity];
 
-            std::auto_ptr<Iterator<E> > iter(arrayList.iterator());
+            std::unique_ptr<Iterator<E> > iter(arrayList.iterator());
             while (iter->hasNext()) {
                 this->elements[this->head++] = iter->next();
                 this->curSize++;

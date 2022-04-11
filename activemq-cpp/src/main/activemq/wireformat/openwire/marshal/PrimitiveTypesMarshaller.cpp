@@ -146,7 +146,7 @@ PrimitiveMap* PrimitiveTypesMarshaller::unmarshalMap(DataInputStream& dataIn) {
 
     try {
 
-        std::auto_ptr<PrimitiveMap> map(new PrimitiveMap());
+        std::unique_ptr<PrimitiveMap> map(new PrimitiveMap());
         PrimitiveTypesMarshaller::unmarshalPrimitiveMap(dataIn, *(map.get()));
         return map.release();
     }
@@ -174,7 +174,7 @@ PrimitiveList* PrimitiveTypesMarshaller::unmarshalList(DataInputStream& dataIn) 
 
     try {
 
-        std::auto_ptr<PrimitiveList> list(new PrimitiveList());
+        std::unique_ptr<PrimitiveList> list(new PrimitiveList());
         PrimitiveTypesMarshaller::unmarshalPrimitiveList(dataIn, *(list.get()));
         return list.release();
     }

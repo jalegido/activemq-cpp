@@ -45,9 +45,9 @@ void DurableTest::testDurableConsumer() {
         cms::MessageProducer* producer = cmsProvider->getProducer();
 
         // Send a text message to the consumer while its active
-        auto_ptr<cms::TextMessage> txtMessage( session->createTextMessage( "TEST MESSAGE" ) );
+        unique_ptr<cms::TextMessage> txtMessage( session->createTextMessage( "TEST MESSAGE" ) );
         producer->send( txtMessage.get() );
-        auto_ptr<cms::Message> received( consumer->receive( 3000 ) );
+        unique_ptr<cms::Message> received( consumer->receive( 3000 ) );
 
         CPPUNIT_ASSERT( received.get() != NULL );
 

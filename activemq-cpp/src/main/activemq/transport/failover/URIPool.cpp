@@ -116,7 +116,7 @@ bool URIPool::addURIs(const List<URI>& uris) {
     bool result = false;
 
     synchronized(&uriPool) {
-        std::auto_ptr<Iterator<URI> > iter(uris.iterator());
+        std::unique_ptr<Iterator<URI> > iter(uris.iterator());
 
         while (iter->hasNext()) {
             URI uri = iter->next();

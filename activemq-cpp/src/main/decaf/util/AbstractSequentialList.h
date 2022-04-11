@@ -98,7 +98,7 @@ namespace util {
          */
         virtual E get(int index) const {
             try {
-                std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
+                std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
                 return iter->next();
             } catch (decaf::util::NoSuchElementException& ex) {
                 throw decaf::lang::exceptions::IndexOutOfBoundsException(
@@ -115,7 +115,7 @@ namespace util {
          */
         virtual E set(int index, const E& element) {
             try {
-                std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
+                std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
                 E result = iter->next();
                 iter->set(element);
                 return result;
@@ -134,7 +134,7 @@ namespace util {
          */
         virtual void add(int index, const E& element) {
             try {
-                std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
+                std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
                 iter->add(element);
             } catch (decaf::util::NoSuchElementException& ex) {
                 throw decaf::lang::exceptions::IndexOutOfBoundsException(
@@ -152,8 +152,8 @@ namespace util {
          * (to skip over the added element).
          */
         virtual bool addAll(int index, const Collection<E>& source) {
-            std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
-            std::auto_ptr<Iterator<E> > srcIter(source.iterator());
+            std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
+            std::unique_ptr<Iterator<E> > srcIter(source.iterator());
             int next = iter->nextIndex();
             while (srcIter->hasNext()) {
                 iter->add(srcIter->next());
@@ -169,7 +169,7 @@ namespace util {
          */
         virtual E removeAt(int index) {
             try {
-                std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
+                std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
                 E result = iter->next();
                 iter->remove();
                 return result;

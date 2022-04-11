@@ -49,7 +49,7 @@ ShutdownInfo::~ShutdownInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ShutdownInfo* ShutdownInfo::cloneDataStructure() const {
-    std::auto_ptr<ShutdownInfo> shutdownInfo(new ShutdownInfo());
+    std::unique_ptr<ShutdownInfo> shutdownInfo(new ShutdownInfo());
 
     // Copy the data from the base class or classes
     shutdownInfo->copyDataStructure(this);

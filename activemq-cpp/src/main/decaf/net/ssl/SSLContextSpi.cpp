@@ -41,8 +41,8 @@ SSLParameters* SSLContextSpi::providerGetSupportedSSLParameters() {
 
     SocketFactory* factory = NULL;
 
-    std::auto_ptr<SSLParameters> params( new SSLParameters() );
-    std::auto_ptr<SSLSocket> socket;
+    std::unique_ptr<SSLParameters> params( new SSLParameters() );
+    std::unique_ptr<SSLSocket> socket;
 
     try{
 
@@ -67,9 +67,9 @@ SSLParameters* SSLContextSpi::providerGetSupportedSSLParameters() {
 ////////////////////////////////////////////////////////////////////////////////
 SSLParameters* SSLContextSpi::providerGetDefaultSSLParameters() {
 
-    std::auto_ptr<SSLParameters> params( new SSLParameters() );
-    std::auto_ptr<SocketFactory> factory;
-    std::auto_ptr<SSLSocket> socket;
+    std::unique_ptr<SSLParameters> params( new SSLParameters() );
+    std::unique_ptr<SocketFactory> factory;
+    std::unique_ptr<SSLSocket> socket;
 
     try{
 

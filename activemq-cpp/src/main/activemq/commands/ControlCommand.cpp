@@ -49,7 +49,7 @@ ControlCommand::~ControlCommand() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ControlCommand* ControlCommand::cloneDataStructure() const {
-    std::auto_ptr<ControlCommand> controlCommand(new ControlCommand());
+    std::unique_ptr<ControlCommand> controlCommand(new ControlCommand());
 
     // Copy the data from the base class or classes
     controlCommand->copyDataStructure(this);

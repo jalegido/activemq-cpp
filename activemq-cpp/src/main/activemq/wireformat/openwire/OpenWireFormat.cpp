@@ -179,7 +179,7 @@ void OpenWireFormat::marshal(const Pointer<commands::Command> command, const act
                 } else {
 
                     ByteArrayOutputStream* baos = new ByteArrayOutputStream();
-                    std::auto_ptr<DataOutputStream> looseOut(new DataOutputStream(baos, true));
+                    std::unique_ptr<DataOutputStream> looseOut(new DataOutputStream(baos, true));
 
                     looseOut->writeByte(type);
                     dsm->looseMarshal(this, dataStructure, looseOut.get());
@@ -287,7 +287,7 @@ commands::DataStructure* OpenWireFormat::doUnmarshal(DataInputStream* dis) {
 
             // Ask the DataStreamMarshaller to create a new instance of its
             // command so that we can fill in its data.
-            std::auto_ptr<DataStructure> data(dsm->createObject());
+            std::unique_ptr<DataStructure> data(dsm->createObject());
 
             if (this->tightEncodingEnabled) {
                 BooleanStream bs;
@@ -397,7 +397,7 @@ DataStructure* OpenWireFormat::tightUnmarshalNestedObject(DataInputStream* dis, 
                 throw IOException(__FILE__, __LINE__, (string("OpenWireFormat::marshal - Unknown data type: ") + Integer::toString(dataType)).c_str());
             }
 
-            std::auto_ptr<DataStructure> data(dsm->createObject());
+            std::unique_ptr<DataStructure> data(dsm->createObject());
 
             if (data->isMarshalAware() && bs->readBoolean()) {
 
@@ -437,7 +437,7 @@ DataStructure* OpenWireFormat::looseUnmarshalNestedObject(decaf::io::DataInputSt
                 throw IOException(__FILE__, __LINE__, (string("OpenWireFormat::marshal - Unknown data type: ") + Integer::toString(dataType)).c_str());
             }
 
-            std::auto_ptr<DataStructure> data(dsm->createObject());
+            std::unique_ptr<DataStructure> data(dsm->createObject());
             dsm->looseUnmarshal(this, data.get(), dis);
             return data.release();
         } else {

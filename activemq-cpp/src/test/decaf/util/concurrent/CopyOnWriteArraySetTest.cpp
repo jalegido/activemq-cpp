@@ -225,7 +225,7 @@ void CopyOnWriteArraySetTest::testIterator() {
     CopyOnWriteArraySet<int> full;
     populate( full, 3 );
 
-    std::auto_ptr< Iterator<int> > iter( full.iterator() );
+    std::unique_ptr< Iterator<int> > iter( full.iterator() );
     int j;
     for( j = 0; iter->hasNext(); j++ ) {
         CPPUNIT_ASSERT_EQUAL( j, iter->next() );
@@ -240,7 +240,7 @@ void CopyOnWriteArraySetTest::testIteratorRemove() {
     CopyOnWriteArraySet<int> full;
     populate( full, 3 );
 
-    std::auto_ptr< Iterator<int> > iter( full.iterator() );
+    std::unique_ptr< Iterator<int> > iter( full.iterator() );
     iter->next();
 
     CPPUNIT_ASSERT_THROW_MESSAGE(

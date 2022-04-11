@@ -437,7 +437,7 @@ namespace util {
         }
 
         virtual bool removeFirstOccurrence(const E& value) {
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 if (iter->next() == value) {
                     iter->remove();
@@ -449,7 +449,7 @@ namespace util {
         }
 
         virtual bool removeLastOccurrence(const E& value) {
-            std::auto_ptr<Iterator<E> > iter(this->descendingIterator());
+            std::unique_ptr<Iterator<E> > iter(this->descendingIterator());
             while (iter->hasNext()) {
                 if (iter->next() == value) {
                     iter->remove();
@@ -992,8 +992,8 @@ namespace util {
                 return false;
             }
 
-            std::auto_ptr<ArrayList<E> > copy;
-            std::auto_ptr<Iterator<E> > iter;
+            std::unique_ptr<ArrayList<E> > copy;
+            std::unique_ptr<Iterator<E> > iter;
 
             if (this == &collection) {
                 copy.reset(new ArrayList<E> (collection));

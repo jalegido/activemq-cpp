@@ -54,7 +54,7 @@ void DefaultSSLSocketFactoryTest::testConstructor() {
 ////////////////////////////////////////////////////////////////////////////////
 void DefaultSSLSocketFactoryTest::testCreateSocket() {
 
-    std::auto_ptr<SocketFactory> factory( new DefaultSSLSocketFactory( "Test" ) );
+    std::unique_ptr<SocketFactory> factory( new DefaultSSLSocketFactory( "Test" ) );
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should have thrown an IOException",

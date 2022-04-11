@@ -49,7 +49,7 @@ TransactionInfo::~TransactionInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 TransactionInfo* TransactionInfo::cloneDataStructure() const {
-    std::auto_ptr<TransactionInfo> transactionInfo(new TransactionInfo());
+    std::unique_ptr<TransactionInfo> transactionInfo(new TransactionInfo());
 
     // Copy the data from the base class or classes
     transactionInfo->copyDataStructure(this);

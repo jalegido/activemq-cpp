@@ -956,7 +956,7 @@ void ActiveMQConsumerKernel::dispose() {
                 // cyclic reference to the MessageDispatch that brought the message to us.
                 synchronized(&internal->deliveredMessages) {
                     if (this->session->isIndividualAcknowledge()) {
-                        std::auto_ptr<Iterator<Pointer<MessageDispatch> > > iter(this->internal->deliveredMessages.iterator());
+                        std::unique_ptr<Iterator<Pointer<MessageDispatch> > > iter(this->internal->deliveredMessages.iterator());
                         while (iter->hasNext()) {
                             iter->next()->getMessage()->setAckHandler(Pointer<ActiveMQAckHandler>());
                         }
@@ -1585,7 +1585,7 @@ void ActiveMQConsumerKernel::rollback() {
                     // stop the delivery of messages.
                     this->internal->unconsumedMessages->stop();
 
-                    std::auto_ptr<Iterator<Pointer<MessageDispatch> > > iter(
+                    std::unique_ptr<Iterator<Pointer<MessageDispatch> > > iter(
                         this->internal->deliveredMessages.iterator());
                     while (iter->hasNext()) {
                         this->internal->unconsumedMessages->enqueueFirst(iter->next());

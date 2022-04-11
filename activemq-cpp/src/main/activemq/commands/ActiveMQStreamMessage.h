@@ -42,8 +42,8 @@ namespace commands {
 
         ActiveMQStreamMessageImpl* impl;
 
-        mutable std::auto_ptr<decaf::io::DataInputStream> dataIn;
-        mutable std::auto_ptr<decaf::io::DataOutputStream> dataOut;
+        mutable std::unique_ptr<decaf::io::DataInputStream> dataIn;
+        mutable std::unique_ptr<decaf::io::DataOutputStream> dataOut;
 
     public:
 

@@ -373,7 +373,7 @@ commands::DataStructure* BaseDataStreamMarshaller::tightUnmarshalBrokerError(Ope
 
         if (bs->readBoolean()) {
 
-            std::auto_ptr<BrokerError> answer(new BrokerError());
+            std::unique_ptr<BrokerError> answer(new BrokerError());
 
             answer->setExceptionClass(tightUnmarshalString(dataIn, bs));
             answer->setMessage(tightUnmarshalString(dataIn, bs));
@@ -494,7 +494,7 @@ commands::DataStructure* BaseDataStreamMarshaller::looseUnmarshalBrokerError(Ope
 
         if (dataIn->readBoolean()) {
 
-            std::auto_ptr<BrokerError> answer(new BrokerError());
+            std::unique_ptr<BrokerError> answer(new BrokerError());
 
             answer->setExceptionClass(looseUnmarshalString(dataIn));
             answer->setMessage(looseUnmarshalString(dataIn));

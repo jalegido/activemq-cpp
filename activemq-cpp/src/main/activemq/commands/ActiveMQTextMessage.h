@@ -33,7 +33,7 @@ namespace commands {
 
         const static unsigned char ID_ACTIVEMQTEXTMESSAGE;
 
-        mutable std::auto_ptr<std::string> text;
+        mutable std::unique_ptr<std::string> text;
 
     private:
 

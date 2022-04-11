@@ -79,16 +79,16 @@ void OpenwireClientAckTest::testAckedMessageAreConsumed() {
     Connection* connection = this->cmsProvider->getConnection();
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<Destination> queue(session->createTemporaryQueue());
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Destination> queue(session->createTemporaryQueue());
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
+    std::unique_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
     producer->send(msg1.get());
 
     // Consume the message...
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
-    std::auto_ptr<Message> msg(consumer->receive(1000));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<Message> msg(consumer->receive(1000));
     CPPUNIT_ASSERT(msg.get() != NULL);
     msg->acknowledge();
 
@@ -110,20 +110,20 @@ void OpenwireClientAckTest::testLastMessageAcked() {
     Connection* connection = this->cmsProvider->getConnection();
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<Destination> queue(session->createTemporaryQueue());
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Destination> queue(session->createTemporaryQueue());
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<TextMessage> msg1(session->createTextMessage("Hello1"));
-    std::auto_ptr<TextMessage> msg2(session->createTextMessage("Hello2"));
-    std::auto_ptr<TextMessage> msg3(session->createTextMessage("Hello3"));
+    std::unique_ptr<TextMessage> msg1(session->createTextMessage("Hello1"));
+    std::unique_ptr<TextMessage> msg2(session->createTextMessage("Hello2"));
+    std::unique_ptr<TextMessage> msg3(session->createTextMessage("Hello3"));
     producer->send(msg1.get());
     producer->send(msg2.get());
     producer->send(msg3.get());
 
     // Consume the message...
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
-    std::auto_ptr<Message> msg(consumer->receive(1000));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<Message> msg(consumer->receive(1000));
     CPPUNIT_ASSERT(msg.get() != NULL);
     msg.reset(consumer->receive(1000));
     CPPUNIT_ASSERT(msg.get() != NULL);
@@ -149,16 +149,16 @@ void OpenwireClientAckTest::testUnAckedMessageAreNotConsumedOnSessionClose() {
     Connection* connection = this->cmsProvider->getConnection();
     connection->start();
 
-    std::auto_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<Destination> queue(session->createTemporaryQueue());
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Destination> queue(session->createTemporaryQueue());
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
+    std::unique_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
     producer->send(msg1.get());
 
     // Consume the message...
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
-    std::auto_ptr<Message> msg(consumer->receive(1000));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<Message> msg(consumer->receive(1000));
     CPPUNIT_ASSERT_MESSAGE("Consumer did not get message on first receive()", msg.get() != NULL);
     // Don't ack the message.
 
@@ -183,15 +183,15 @@ void OpenwireClientAckTest::testAckedMessageAreConsumedAsync() {
 
     MyMesageListener listener(false);
 
-    std::auto_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<Destination> queue(session->createTemporaryQueue());
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Destination> queue(session->createTemporaryQueue());
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
+    std::unique_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
     producer->send(msg1.get());
 
     // Consume the message...
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
     consumer->setMessageListener(&listener);
 
     Thread::sleep(5000);
@@ -203,7 +203,7 @@ void OpenwireClientAckTest::testAckedMessageAreConsumedAsync() {
 
     // Attempt to Consume the message...
     consumer.reset(session->createConsumer(queue.get()));
-    std::auto_ptr<Message> msg(consumer->receive(1000));
+    std::unique_ptr<Message> msg(consumer->receive(1000));
     CPPUNIT_ASSERT(msg.get() == NULL);
 
     session->close();
@@ -218,15 +218,15 @@ void OpenwireClientAckTest::testUnAckedMessageAreNotConsumedOnSessionCloseAsync(
     // Don't send an ack
     MyMesageListener listener(true);
 
-    std::auto_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<Destination> queue(session->createTemporaryQueue());
-    std::auto_ptr<MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<Session> session(connection->createSession(Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Destination> queue(session->createTemporaryQueue());
+    std::unique_ptr<MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
+    std::unique_ptr<TextMessage> msg1(session->createTextMessage("Hello"));
     producer->send(msg1.get());
 
     // Consume the message...
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(queue.get()));
     consumer->setMessageListener(&listener);
     // Don't ack the message.
 
@@ -238,7 +238,7 @@ void OpenwireClientAckTest::testUnAckedMessageAreNotConsumedOnSessionCloseAsync(
 
     // Attempt to Consume the message...
     consumer.reset(session->createConsumer(queue.get()));
-    std::auto_ptr<Message> msg(consumer->receive(2000));
+    std::unique_ptr<Message> msg(consumer->receive(2000));
     CPPUNIT_ASSERT(msg.get() != NULL);
     msg->acknowledge();
 

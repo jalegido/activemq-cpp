@@ -49,7 +49,7 @@ RemoveSubscriptionInfo::~RemoveSubscriptionInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 RemoveSubscriptionInfo* RemoveSubscriptionInfo::cloneDataStructure() const {
-    std::auto_ptr<RemoveSubscriptionInfo> removeSubscriptionInfo(new RemoveSubscriptionInfo());
+    std::unique_ptr<RemoveSubscriptionInfo> removeSubscriptionInfo(new RemoveSubscriptionInfo());
 
     // Copy the data from the base class or classes
     removeSubscriptionInfo->copyDataStructure(this);

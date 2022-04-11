@@ -758,7 +758,7 @@ void ArrayListTest::testTrimToSize() {
     list.add( "a" );
 
     ArrayList<std::string> strArray( list );
-    std::auto_ptr< Iterator<int> > iter( array.iterator() );
+    std::unique_ptr< Iterator<int> > iter( array.iterator() );
     array.trimToSize();
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
@@ -841,7 +841,7 @@ void ArrayListTest::testListIterator1IndexOutOfBoundsException() {
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should throw an IndexOutOfBoundsException",
-        std::auto_ptr< ListIterator<int> > it( list.listIterator( -1 ) ),
+        std::unique_ptr< ListIterator<int> > it( list.listIterator( -1 ) ),
         IndexOutOfBoundsException );
 }
 
@@ -854,6 +854,6 @@ void ArrayListTest::testListIterator2IndexOutOfBoundsException() {
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should throw an IndexOutOfBoundsException",
-        std::auto_ptr< ListIterator<int> > it( list.listIterator( 100 ) ),
+        std::unique_ptr< ListIterator<int> > it( list.listIterator( 100 ) ),
         IndexOutOfBoundsException );
 }

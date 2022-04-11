@@ -50,7 +50,7 @@ ConnectionInfo::~ConnectionInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ConnectionInfo* ConnectionInfo::cloneDataStructure() const {
-    std::auto_ptr<ConnectionInfo> connectionInfo(new ConnectionInfo());
+    std::unique_ptr<ConnectionInfo> connectionInfo(new ConnectionInfo());
 
     // Copy the data from the base class or classes
     connectionInfo->copyDataStructure(this);

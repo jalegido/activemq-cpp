@@ -74,7 +74,7 @@ MessageAck::~MessageAck() {
 
 ////////////////////////////////////////////////////////////////////////////////
 MessageAck* MessageAck::cloneDataStructure() const {
-    std::auto_ptr<MessageAck> messageAck(new MessageAck());
+    std::unique_ptr<MessageAck> messageAck(new MessageAck());
 
     // Copy the data from the base class or classes
     messageAck->copyDataStructure(this);

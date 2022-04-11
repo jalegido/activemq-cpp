@@ -49,7 +49,7 @@ RemoveInfo::~RemoveInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 RemoveInfo* RemoveInfo::cloneDataStructure() const {
-    std::auto_ptr<RemoveInfo> removeInfo(new RemoveInfo());
+    std::unique_ptr<RemoveInfo> removeInfo(new RemoveInfo());
 
     // Copy the data from the base class or classes
     removeInfo->copyDataStructure(this);

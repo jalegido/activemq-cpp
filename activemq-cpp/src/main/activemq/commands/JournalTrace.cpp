@@ -49,7 +49,7 @@ JournalTrace::~JournalTrace() {
 
 ////////////////////////////////////////////////////////////////////////////////
 JournalTrace* JournalTrace::cloneDataStructure() const {
-    std::auto_ptr<JournalTrace> journalTrace(new JournalTrace());
+    std::unique_ptr<JournalTrace> journalTrace(new JournalTrace());
 
     // Copy the data from the base class or classes
     journalTrace->copyDataStructure(this);

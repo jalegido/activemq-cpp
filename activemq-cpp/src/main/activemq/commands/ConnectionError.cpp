@@ -49,7 +49,7 @@ ConnectionError::~ConnectionError() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ConnectionError* ConnectionError::cloneDataStructure() const {
-    std::auto_ptr<ConnectionError> connectionError(new ConnectionError());
+    std::unique_ptr<ConnectionError> connectionError(new ConnectionError());
 
     // Copy the data from the base class or classes
     connectionError->copyDataStructure(this);

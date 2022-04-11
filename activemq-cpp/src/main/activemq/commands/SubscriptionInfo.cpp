@@ -49,7 +49,7 @@ SubscriptionInfo::~SubscriptionInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 SubscriptionInfo* SubscriptionInfo::cloneDataStructure() const {
-    std::auto_ptr<SubscriptionInfo> subscriptionInfo(new SubscriptionInfo());
+    std::unique_ptr<SubscriptionInfo> subscriptionInfo(new SubscriptionInfo());
 
     // Copy the data from the base class or classes
     subscriptionInfo->copyDataStructure(this);

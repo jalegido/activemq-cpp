@@ -49,7 +49,7 @@ MessageDispatchNotification::~MessageDispatchNotification() {
 
 ////////////////////////////////////////////////////////////////////////////////
 MessageDispatchNotification* MessageDispatchNotification::cloneDataStructure() const {
-    std::auto_ptr<MessageDispatchNotification> messageDispatchNotification(new MessageDispatchNotification());
+    std::unique_ptr<MessageDispatchNotification> messageDispatchNotification(new MessageDispatchNotification());
 
     // Copy the data from the base class or classes
     messageDispatchNotification->copyDataStructure(this);

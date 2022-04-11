@@ -40,7 +40,7 @@ namespace {
     class ProducerThread : public Thread {
     private:
 
-        std::auto_ptr<activemq::util::CMSProvider> cmsProducerProvider;
+        std::unique_ptr<activemq::util::CMSProvider> cmsProducerProvider;
         int num;
         int size;
 

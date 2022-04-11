@@ -49,7 +49,7 @@ ReplayCommand::~ReplayCommand() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ReplayCommand* ReplayCommand::cloneDataStructure() const {
-    std::auto_ptr<ReplayCommand> replayCommand(new ReplayCommand());
+    std::unique_ptr<ReplayCommand> replayCommand(new ReplayCommand());
 
     // Copy the data from the base class or classes
     replayCommand->copyDataStructure(this);

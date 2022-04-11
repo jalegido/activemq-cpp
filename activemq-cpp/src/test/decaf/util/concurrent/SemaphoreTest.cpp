@@ -536,23 +536,23 @@ void SemaphoreTest::testGetQueuedThreads() {
     Thread t2(&runnable2);
 
     try {
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         lock.acquireUninterruptibly();
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         t1.start();
         Thread::sleep( SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
         t2.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
         t1.interrupt();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(!std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(!std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
         lock.release();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         t1.join();
         t2.join();
     } catch(Exception& e) {

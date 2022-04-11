@@ -48,14 +48,14 @@ namespace util {
         bool durable;
         std::string subscription;
 
-        std::auto_ptr<cms::ConnectionFactory> connectionFactory;
-        std::auto_ptr<cms::Connection> connection;
-        std::auto_ptr<cms::Session> session;
-        std::auto_ptr<cms::MessageConsumer> consumer;
-        std::auto_ptr<cms::MessageProducer> producer;
-        std::auto_ptr<cms::MessageProducer> noDestProducer;
-        std::auto_ptr<cms::Destination> destination;
-        std::auto_ptr<cms::Destination> tempDestination;
+        std::unique_ptr<cms::ConnectionFactory> connectionFactory;
+        std::unique_ptr<cms::Connection> connection;
+        std::unique_ptr<cms::Session> session;
+        std::unique_ptr<cms::MessageConsumer> consumer;
+        std::unique_ptr<cms::MessageProducer> producer;
+        std::unique_ptr<cms::MessageProducer> noDestProducer;
+        std::unique_ptr<cms::Destination> destination;
+        std::unique_ptr<cms::Destination> tempDestination;
 
     public:
 

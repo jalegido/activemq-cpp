@@ -41,9 +41,9 @@ void OpenwireAsyncSenderTest::testOpenWireConnector() {
 
     try{
 
-        auto_ptr<ActiveMQConnectionFactory> connectionFactory(
+        unique_ptr<ActiveMQConnectionFactory> connectionFactory(
             new ActiveMQConnectionFactory( this->getBrokerURL() ) );
-        auto_ptr<cms::Connection> connection( connectionFactory->createConnection() );
+        unique_ptr<cms::Connection> connection( connectionFactory->createConnection() );
 
         ActiveMQConnection* amqConnection =
             dynamic_cast<ActiveMQConnection*>( connection.get() );

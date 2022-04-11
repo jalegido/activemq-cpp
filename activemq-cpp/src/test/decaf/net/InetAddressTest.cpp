@@ -41,7 +41,7 @@ void InetAddressTest::testClone() {
     CPPUNIT_ASSERT( address.getHostName() != "" );
     CPPUNIT_ASSERT( address.getHostAddress() != "" );
 
-    std::auto_ptr<InetAddress> copy( address.clone() );
+    std::unique_ptr<InetAddress> copy( address.clone() );
 
     CPPUNIT_ASSERT( address.getHostName() == copy->getHostName() );
     CPPUNIT_ASSERT( address.getHostAddress() == copy->getHostAddress() );

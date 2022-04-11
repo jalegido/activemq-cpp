@@ -66,7 +66,7 @@ namespace logging{
         long long threadId;
 
         // A Throwable that is associated with this record
-        std::auto_ptr<decaf::lang::Throwable> thrown;
+        std::unique_ptr<decaf::lang::Throwable> thrown;
 
     public:
 

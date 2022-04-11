@@ -143,7 +143,7 @@ Socket* OpenSSLServerSocket::accept() {
 
     try{
 
-        std::auto_ptr<OpenSSLSocket> socket( new OpenSSLSocket( this->parameters->clone() ) );
+        std::unique_ptr<OpenSSLSocket> socket( new OpenSSLSocket( this->parameters->clone() ) );
         this->implAccept( socket.get() );
         socket->startHandshake();
 

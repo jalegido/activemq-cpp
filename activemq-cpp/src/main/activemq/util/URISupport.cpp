@@ -291,7 +291,7 @@ void URISupport::parseComposite(const URI& uri, CompositeData& rc, const std::st
     }
 
     LinkedList<std::string> components = splitComponents(componentString);
-    std::auto_ptr<Iterator<std::string> > iter(components.iterator());
+    std::unique_ptr<Iterator<std::string> > iter(components.iterator());
     while (iter->hasNext()) {
         rc.getComponents().add(URI(iter->next()));
     }

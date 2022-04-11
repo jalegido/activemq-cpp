@@ -67,7 +67,7 @@ namespace core {
         /**
          * The instance of ConnectionMetaData to return to clients.
          */
-        std::auto_ptr<cms::ConnectionMetaData> connectionMetaData;
+        std::unique_ptr<cms::ConnectionMetaData> connectionMetaData;
 
         /**
          * Indicates if this Connection is started

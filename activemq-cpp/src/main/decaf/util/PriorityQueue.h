@@ -422,7 +422,7 @@ namespace util {
         void getFromCollection(const Collection<E>& c) {
             initCapacity(c);
             _comparator.reset(new comparators::Less<E>());
-            std::auto_ptr<Iterator<E> > iter(c.iterator());
+            std::unique_ptr<Iterator<E> > iter(c.iterator());
 
             while (iter->hasNext()) {
                 this->offer(iter->next());

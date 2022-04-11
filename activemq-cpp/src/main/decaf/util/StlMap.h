@@ -669,7 +669,7 @@ namespace util{
          * {@inheritDoc}
          */
         virtual bool equals(const Map<K,V>& source) const {
-            typename std::auto_ptr< Iterator<K> > iterator(this->keySet().iterator());
+            typename std::unique_ptr< Iterator<K> > iterator(this->keySet().iterator());
             while (iterator->hasNext()) {
                 K key = iterator->next();
                 if (!this->containsKey(key)) {
@@ -817,7 +817,7 @@ namespace util{
          * {@inheritDoc}
          */
         virtual void putAll(const Map<K, V>& other) {
-            typename std::auto_ptr< Iterator<K> > iterator(other.keySet().iterator());
+            typename std::unique_ptr< Iterator<K> > iterator(other.keySet().iterator());
             while (iterator->hasNext()) {
                 K key = iterator->next();
                 this->put(key, other.get(key));

@@ -49,7 +49,7 @@ NetworkBridgeFilter::~NetworkBridgeFilter() {
 
 ////////////////////////////////////////////////////////////////////////////////
 NetworkBridgeFilter* NetworkBridgeFilter::cloneDataStructure() const {
-    std::auto_ptr<NetworkBridgeFilter> networkBridgeFilter(new NetworkBridgeFilter());
+    std::unique_ptr<NetworkBridgeFilter> networkBridgeFilter(new NetworkBridgeFilter());
 
     // Copy the data from the base class or classes
     networkBridgeFilter->copyDataStructure(this);

@@ -421,7 +421,7 @@ namespace util {
             std::vector<E> array = collection.toArray();
             typename std::vector<E>::const_iterator vecIter = array.begin();
 
-            std::auto_ptr<ListIterator<E> > iter(this->listIterator((int) this->values.size()));
+            std::unique_ptr<ListIterator<E> > iter(this->listIterator((int) this->values.size()));
 
             while (vecIter != array.end()) {
                 iter->add(*(vecIter++));
@@ -445,7 +445,7 @@ namespace util {
             std::vector<E> array = collection.toArray();
             typename std::vector<E>::const_iterator vecIter = array.begin();
 
-            std::auto_ptr<ListIterator<E> > iter(this->listIterator(index));
+            std::unique_ptr<ListIterator<E> > iter(this->listIterator(index));
 
             while (vecIter != array.end()) {
                 iter->add(*(vecIter++));

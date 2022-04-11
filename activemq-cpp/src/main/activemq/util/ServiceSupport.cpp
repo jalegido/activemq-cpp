@@ -63,7 +63,7 @@ void ServiceSupport::start() {
         this->stopped.set(!success);
 
         synchronized(&this->listeners) {
-            std::auto_ptr<Iterator<ServiceListener*> > iter(this->listeners.iterator());
+            std::unique_ptr<Iterator<ServiceListener*> > iter(this->listeners.iterator());
             while (iter->hasNext()) {
                 iter->next()->started(this);
             }
@@ -87,7 +87,7 @@ void ServiceSupport::stop() {
         this->stopping.set(false);
 
         synchronized(&this->listeners) {
-            std::auto_ptr<Iterator<ServiceListener*> > iter(this->listeners.iterator());
+            std::unique_ptr<Iterator<ServiceListener*> > iter(this->listeners.iterator());
             while (iter->hasNext()) {
                 iter->next()->stopped(this);
             }

@@ -87,7 +87,7 @@ SessionId::~SessionId() {
 
 ////////////////////////////////////////////////////////////////////////////////
 SessionId* SessionId::cloneDataStructure() const {
-    std::auto_ptr<SessionId> sessionId(new SessionId());
+    std::unique_ptr<SessionId> sessionId(new SessionId());
 
     // Copy the data from the base class or classes
     sessionId->copyDataStructure(this);

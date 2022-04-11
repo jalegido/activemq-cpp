@@ -115,7 +115,7 @@ OpenSSLParameters* OpenSSLParameters::clone() const {
 
 #ifdef HAVE_OPENSSL
 
-    std::auto_ptr<OpenSSLParameters> cloned( new OpenSSLParameters( this->context ) );
+    std::unique_ptr<OpenSSLParameters> cloned( new OpenSSLParameters( this->context ) );
 
     cloned->enabledProtocols = this->enabledProtocols;
     cloned->enabledCipherSuites = this->enabledCipherSuites;

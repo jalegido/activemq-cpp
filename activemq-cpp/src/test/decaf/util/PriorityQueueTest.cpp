@@ -85,8 +85,8 @@ void PriorityQueueTest::testConstructor_3() {
 
     CPPUNIT_ASSERT( copy.size() == intQueue.size() );
 
-    std::auto_ptr< Iterator<int> > q_iter( intQueue.iterator() );
-    std::auto_ptr< Iterator<int> > c_iter( copy.iterator() );
+    std::unique_ptr< Iterator<int> > q_iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > c_iter( copy.iterator() );
 
     while( q_iter->hasNext() && c_iter->hasNext() ) {
         CPPUNIT_ASSERT( q_iter->next() == c_iter->next() );
@@ -110,8 +110,8 @@ void PriorityQueueTest::testAssignment() {
 
     CPPUNIT_ASSERT( copy.size() == intQueue.size() );
 
-    std::auto_ptr< Iterator<int> > q_iter( intQueue.iterator() );
-    std::auto_ptr< Iterator<int> > c_iter( copy.iterator() );
+    std::unique_ptr< Iterator<int> > q_iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > c_iter( copy.iterator() );
 
     while( q_iter->hasNext() && c_iter->hasNext() ) {
         CPPUNIT_ASSERT( q_iter->next() == c_iter->next() );
@@ -119,8 +119,8 @@ void PriorityQueueTest::testAssignment() {
 
     PriorityQueue<int> assigned = copy;
 
-    std::auto_ptr< Iterator<int> > a1_iter( copy.iterator() );
-    std::auto_ptr< Iterator<int> > a2_iter( assigned.iterator() );
+    std::unique_ptr< Iterator<int> > a1_iter( copy.iterator() );
+    std::unique_ptr< Iterator<int> > a2_iter( assigned.iterator() );
 
     while( a1_iter->hasNext() && a2_iter->hasNext() ) {
         CPPUNIT_ASSERT( a1_iter->next() == a2_iter->next() );
@@ -358,7 +358,7 @@ void PriorityQueueTest::testIterator() {
         integerQueue.offer( array[i] );
     }
 
-    std::auto_ptr< Iterator<int> > iter( integerQueue.iterator() );
+    std::unique_ptr< Iterator<int> > iter( integerQueue.iterator() );
     CPPUNIT_ASSERT( iter.get() != NULL );
 
     std::vector<int> result;
@@ -383,7 +383,7 @@ void PriorityQueueTest::testIterator() {
 void PriorityQueueTest::testIteratorEmpty() {
 
     PriorityQueue<int> intQueue;
-    std::auto_ptr< Iterator<int> > iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > iter( intQueue.iterator() );
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should Throw a NoSuchElementException",
@@ -402,7 +402,7 @@ void PriorityQueueTest::testIteratorOutOfBounds() {
 
     PriorityQueue<int> intQueue;
     intQueue.offer( 0 );
-    std::auto_ptr< Iterator<int> > iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > iter( intQueue.iterator() );
     iter->next();
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should Throw a NoSuchElementException",
@@ -426,7 +426,7 @@ void PriorityQueueTest::testIteratorRemove() {
     for( int i = 0; i < 5; i++ ) {
         intQueue.offer( array[i] );
     }
-    std::auto_ptr< Iterator<int> > iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > iter( intQueue.iterator() );
     CPPUNIT_ASSERT( iter.get() != NULL );
     for( int i = 0; i < 5; i++ ) {
         iter->next();
@@ -453,7 +453,7 @@ void PriorityQueueTest::testIteratorRemove() {
     CPPUNIT_ASSERT( !constQueue.isEmpty() );
     CPPUNIT_ASSERT( constQueue.size() == intQueue.size() );
 
-    std::auto_ptr< Iterator<int> > const_iter( constQueue.iterator() );
+    std::unique_ptr< Iterator<int> > const_iter( constQueue.iterator() );
     const_iter->next();
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should Throw a UnsupportedOperationException",
@@ -469,7 +469,7 @@ void PriorityQueueTest::testIteratorRemoveIllegalState() {
     for( int i = 0; i < 5; i++ ) {
         intQueue.offer( array[i] );
     }
-    std::auto_ptr< Iterator<int> > iter( intQueue.iterator() );
+    std::unique_ptr< Iterator<int> > iter( intQueue.iterator() );
     CPPUNIT_ASSERT( iter.get() != NULL );
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should Throw a IllegalStateException",

@@ -112,7 +112,7 @@ void ActiveMQConnectionFactoryTest::test2WithOpenWire()
 
         ActiveMQConnectionFactory connectionFactory( URI );
 
-        std::auto_ptr<cms::Connection> connection(
+        std::unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection() );
         CPPUNIT_ASSERT( connection.get() != NULL );
 
@@ -141,7 +141,7 @@ void ActiveMQConnectionFactoryTest::test3WithOpenWire()
 
         ActiveMQConnectionFactory connectionFactory( URI );
 
-        std::auto_ptr<cms::Connection> connection(
+        std::unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection(username, password) );
         CPPUNIT_ASSERT( connection.get() != NULL );
 
@@ -172,7 +172,7 @@ void ActiveMQConnectionFactoryTest::test4WithOpenWire()
 
         ActiveMQConnectionFactory connectionFactory( URI, username, password );
 
-        std::auto_ptr<cms::Connection> connection(
+        std::unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection() );
         CPPUNIT_ASSERT( connection.get() != NULL );
 
@@ -201,7 +201,7 @@ void ActiveMQConnectionFactoryTest::testExceptionWithPortOutOfRange() {
 
         ActiveMQConnectionFactory connectionFactory( URI );
 
-        auto_ptr<cms::Connection> connection(
+        unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection() );
 
         CPPUNIT_ASSERT( false );
@@ -219,7 +219,7 @@ void ActiveMQConnectionFactoryTest::testExceptionOnCreate() {
 
         ActiveMQConnectionFactory connectionFactory( URI );
 
-        auto_ptr<cms::Connection> connection(
+        unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection() );
 
         CPPUNIT_ASSERT( false );
@@ -238,17 +238,17 @@ void ActiveMQConnectionFactoryTest::testCreateWithURIOptions()
 
         ActiveMQConnectionFactory connectionFactory( URI );
 
-        std::auto_ptr<cms::Connection> connection(
+        std::unique_ptr<cms::Connection> connection(
             connectionFactory.createConnection() );
         CPPUNIT_ASSERT( connection.get() != NULL );
 
         ActiveMQConnection* amqConnection =
             dynamic_cast< ActiveMQConnection* >( connection.get() );
 
-        std::auto_ptr<ActiveMQSession> session( dynamic_cast<ActiveMQSession*>(
+        std::unique_ptr<ActiveMQSession> session( dynamic_cast<ActiveMQSession*>(
             amqConnection->createSession() ) );
 
-        std::auto_ptr<ActiveMQProducer> producer( dynamic_cast<ActiveMQProducer*>(
+        std::unique_ptr<ActiveMQProducer> producer( dynamic_cast<ActiveMQProducer*>(
             session->createProducer( NULL ) ) );
 
         CPPUNIT_ASSERT( producer->getProducerInfo()->getWindowSize() == 65536 );
@@ -271,7 +271,7 @@ void ActiveMQConnectionFactoryTest::testTransportListener() {
 
     ActiveMQConnectionFactory connectionFactory(URI);
 
-    std::auto_ptr<cms::Connection> connection(
+    std::unique_ptr<cms::Connection> connection(
         connectionFactory.createConnection());
     CPPUNIT_ASSERT(connection.get() != NULL);
 
@@ -280,15 +280,15 @@ void ActiveMQConnectionFactoryTest::testTransportListener() {
 
     amqConnection->addTransportListener(&listener);
 
-    std::auto_ptr<ActiveMQSession> session(
+    std::unique_ptr<ActiveMQSession> session(
         dynamic_cast<ActiveMQSession*> (amqConnection->createSession()));
 
-    std::auto_ptr<cms::Destination> destination(session->createTopic("TEST"));
+    std::unique_ptr<cms::Destination> destination(session->createTopic("TEST"));
 
-    std::auto_ptr<ActiveMQProducer> producer(
+    std::unique_ptr<ActiveMQProducer> producer(
         dynamic_cast<ActiveMQProducer*> (session->createProducer(destination.get())));
 
-    std::auto_ptr<cms::TextMessage> message(session->createTextMessage());
+    std::unique_ptr<cms::TextMessage> message(session->createTextMessage());
     producer->send(message.get());
 
     Thread::sleep(2000);

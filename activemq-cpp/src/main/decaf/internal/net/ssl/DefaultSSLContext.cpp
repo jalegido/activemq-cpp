@@ -78,8 +78,8 @@ SSLContext* DefaultSSLContext::getContext() {
 
     if( defaultSSLContext == NULL ) {
 
-        std::auto_ptr<SecureRandom> random( new SecureRandom() );
-        std::auto_ptr<SSLContextSpi> contextSpi( new OpenSSLContextSpi() );
+        std::unique_ptr<SecureRandom> random( new SecureRandom() );
+        std::unique_ptr<SSLContextSpi> contextSpi( new OpenSSLContextSpi() );
 
         // TODO - This should eventually move to a call to SSLContext::init();
         contextSpi->providerInit( random.release() );

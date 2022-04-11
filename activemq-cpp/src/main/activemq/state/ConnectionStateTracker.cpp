@@ -288,7 +288,7 @@ void ConnectionStateTracker::doRestoreTransactions(Pointer<transport::Transport>
                 transport->oneway(state->next()->getInfo());
             }
 
-            std::auto_ptr<Iterator<Pointer<Command> > > commands(txState->getCommands().iterator());
+            std::unique_ptr<Iterator<Pointer<Command> > > commands(txState->getCommands().iterator());
 
             while (commands->hasNext()) {
                 transport->oneway(commands->next());
@@ -394,7 +394,7 @@ void ConnectionStateTracker::doRestoreProducers(Pointer<transport::Transport> tr
 ////////////////////////////////////////////////////////////////////////////////
 void ConnectionStateTracker::doRestoreTempDestinations(Pointer<transport::Transport> transport, Pointer<ConnectionState> connectionState) {
     try {
-        std::auto_ptr<Iterator<Pointer<DestinationInfo> > > iter(connectionState->getTempDesinations().iterator());
+        std::unique_ptr<Iterator<Pointer<DestinationInfo> > > iter(connectionState->getTempDesinations().iterator());
 
         while (iter->hasNext()) {
             transport->oneway(iter->next());

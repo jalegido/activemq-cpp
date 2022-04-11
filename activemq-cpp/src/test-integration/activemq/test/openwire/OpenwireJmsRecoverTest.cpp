@@ -117,16 +117,16 @@ void OpenwireJmsRecoverTest::testTopicAsynchRecoverWithAutoAck() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireJmsRecoverTest::doTestSynchRecover() {
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(destination));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(destination));
     connection->start();
 
-    std::auto_ptr<MessageProducer> producer(session->createProducer(destination));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(destination));
     producer->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("First")).get());
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("Second")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("First")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("Second")).get());
 
-    std::auto_ptr<TextMessage> message(dynamic_cast<TextMessage*>(consumer->receive(2000)));
+    std::unique_ptr<TextMessage> message(dynamic_cast<TextMessage*>(consumer->receive(2000)));
     CPPUNIT_ASSERT_EQUAL(string("First"), message->getText());
     CPPUNIT_ASSERT(!message->getCMSRedelivered());
     message->acknowledge();
@@ -206,16 +206,16 @@ namespace {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireJmsRecoverTest::doTestAsynchRecover() {
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
     std::vector<string> errorMessages;
     CountDownLatch doneCountDownLatch(1);
 
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(destination));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(destination));
 
-    std::auto_ptr<MessageProducer> producer(session->createProducer(destination));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(destination));
     producer->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("First")).get());
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("Second")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("First")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("Second")).get());
 
     ClientAckMessageListener listener(session.get(), &errorMessages, &doneCountDownLatch);
     consumer->setMessageListener(&listener);
@@ -291,16 +291,16 @@ namespace {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireJmsRecoverTest::doTestAsynchRecoverWithAutoAck() {
 
-    std::auto_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
     std::vector<string> errorMessages;
     CountDownLatch doneCountDownLatch(1);
 
-    std::auto_ptr<MessageConsumer> consumer(session->createConsumer(destination));
+    std::unique_ptr<MessageConsumer> consumer(session->createConsumer(destination));
 
-    std::auto_ptr<MessageProducer> producer(session->createProducer(destination));
+    std::unique_ptr<MessageProducer> producer(session->createProducer(destination));
     producer->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("First")).get());
-    producer->send(std::auto_ptr<cms::Message>(session->createTextMessage("Second")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("First")).get());
+    producer->send(std::unique_ptr<cms::Message>(session->createTextMessage("Second")).get());
 
     AutoAckMessageListener listener(session.get(), &errorMessages, &doneCountDownLatch);
     consumer->setMessageListener(&listener);

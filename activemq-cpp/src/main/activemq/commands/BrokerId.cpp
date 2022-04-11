@@ -59,7 +59,7 @@ BrokerId::~BrokerId() {
 
 ////////////////////////////////////////////////////////////////////////////////
 BrokerId* BrokerId::cloneDataStructure() const {
-    std::auto_ptr<BrokerId> brokerId(new BrokerId());
+    std::unique_ptr<BrokerId> brokerId(new BrokerId());
 
     // Copy the data from the base class or classes
     brokerId->copyDataStructure(this);

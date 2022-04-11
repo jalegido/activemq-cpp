@@ -48,7 +48,7 @@ PooledSession::PooledSession(SessionPool* pool, cms::Session* session) :
 PooledSession::~PooledSession() {
 
     // Destroy cached producers.
-    std::auto_ptr<Iterator<CachedProducer*> > producers(producerCache.values().iterator());
+    std::unique_ptr<Iterator<CachedProducer*> > producers(producerCache.values().iterator());
     while (producers->hasNext()) {
         try {
             delete producers->next();
@@ -56,7 +56,7 @@ PooledSession::~PooledSession() {
     }
 
     // Destroy cached consumers.
-    std::auto_ptr<Iterator<CachedConsumer*> > consumers(consumerCache.values().iterator());
+    std::unique_ptr<Iterator<CachedConsumer*> > consumers(consumerCache.values().iterator());
     while (consumers->hasNext()) {
         try {
             delete consumers->next();

@@ -120,10 +120,10 @@ void ActiveMQSessionTest::testCreateManyConsumersAndSetListeners() {
     CPPUNIT_ASSERT( connection->isStarted() == true );
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session( connection->createSession() );
+    std::unique_ptr<cms::Session> session( connection->createSession() );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
 
@@ -151,19 +151,19 @@ void ActiveMQSessionTest::testAutoAcking() {
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session( connection->createSession() );
+    std::unique_ptr<cms::Session> session( connection->createSession() );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
-    std::auto_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
     CPPUNIT_ASSERT( topic2.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
-    std::auto_ptr<ActiveMQConsumer> consumer2(
+    std::unique_ptr<ActiveMQConsumer> consumer2(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic2.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -211,20 +211,20 @@ void ActiveMQSessionTest::testClientAck() {
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     // Create an Client Ack Session
-    std::auto_ptr<cms::Session> session(
+    std::unique_ptr<cms::Session> session(
         connection->createSession( cms::Session::CLIENT_ACKNOWLEDGE ) );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
-    std::auto_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
     CPPUNIT_ASSERT( topic2.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
-    std::auto_ptr<ActiveMQConsumer> consumer2(
+    std::unique_ptr<ActiveMQConsumer> consumer2(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic2.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -277,16 +277,16 @@ void ActiveMQSessionTest::testTransactionCommitOneConsumer() {
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     // Create an Transacted Session
-    std::auto_ptr<cms::Session> session(
+    std::unique_ptr<cms::Session> session(
         connection->createSession( cms::Session::SESSION_TRANSACTED ) );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -326,20 +326,20 @@ void ActiveMQSessionTest::testTransactionCommitTwoConsumer() {
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session(
+    std::unique_ptr<cms::Session> session(
         connection->createSession( cms::Session::SESSION_TRANSACTED ) );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
-    std::auto_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
     CPPUNIT_ASSERT( topic2.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
-    std::auto_ptr<ActiveMQConsumer> consumer2(
+    std::unique_ptr<ActiveMQConsumer> consumer2(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic2.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -390,16 +390,16 @@ void ActiveMQSessionTest::testTransactionRollbackOneConsumer() {
 
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<cms::Session> session(
+    std::unique_ptr<cms::Session> session(
         connection->createSession( cms::Session::SESSION_TRANSACTED ) );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -442,20 +442,20 @@ void ActiveMQSessionTest::testTransactionRollbackTwoConsumer() {
 
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<cms::Session> session(
+    std::unique_ptr<cms::Session> session(
         connection->createSession( cms::Session::SESSION_TRANSACTED ) );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
-    std::auto_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
     CPPUNIT_ASSERT( topic2.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
-    std::auto_ptr<ActiveMQConsumer> consumer2(
+    std::unique_ptr<ActiveMQConsumer> consumer2(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic2.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -520,15 +520,15 @@ void ActiveMQSessionTest::testTransactionCloseWithoutCommit() {
     CPPUNIT_ASSERT(connection.get() != NULL);
 
     // Create an Transacted Session
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1(session->createTopic("TestTopic1"));
+    std::unique_ptr<cms::Topic> topic1(session->createTopic("TestTopic1"));
 
     CPPUNIT_ASSERT(topic1.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*> (session->createConsumer(topic1.get())));
 
     CPPUNIT_ASSERT(consumer1.get() != NULL);
@@ -565,19 +565,19 @@ void ActiveMQSessionTest::testExpiration() {
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session( connection->createSession() );
+    std::unique_ptr<cms::Session> session( connection->createSession() );
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
-    std::auto_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
+    std::unique_ptr<cms::Topic> topic1( session->createTopic( "TestTopic1" ) );
+    std::unique_ptr<cms::Topic> topic2( session->createTopic( "TestTopic2" ) );
 
     CPPUNIT_ASSERT( topic1.get() != NULL );
     CPPUNIT_ASSERT( topic2.get() != NULL );
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
-    std::auto_ptr<ActiveMQConsumer> consumer2(
+    std::unique_ptr<ActiveMQConsumer> consumer2(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic2.get() ) ) );
 
     CPPUNIT_ASSERT( consumer1.get() != NULL );
@@ -622,15 +622,15 @@ void ActiveMQSessionTest::testTransactionCommitAfterConsumerClosed() {
     CPPUNIT_ASSERT(connection.get() != NULL);
 
     // Create an Transacted Session
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic1(session->createTopic("TestTopic1"));
+    std::unique_ptr<cms::Topic> topic1(session->createTopic("TestTopic1"));
 
     CPPUNIT_ASSERT(topic1.get() != NULL);
 
     // Create a consumer
-    std::auto_ptr<ActiveMQConsumer> consumer1(
+    std::unique_ptr<ActiveMQConsumer> consumer1(
         dynamic_cast<ActiveMQConsumer*>( session->createConsumer( topic1.get() ) ) );
 
     CPPUNIT_ASSERT(consumer1.get() != NULL);
@@ -667,10 +667,10 @@ void ActiveMQSessionTest::testCreateTempQueueByName() {
     CPPUNIT_ASSERT(connection->isStarted() == true);
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session(connection->createSession());
+    std::unique_ptr<cms::Session> session(connection->createSession());
 
     // Create a Topic
-    std::auto_ptr<cms::Queue> queue(session->createQueue("ID:TestQueue"));
+    std::unique_ptr<cms::Queue> queue(session->createQueue("ID:TestQueue"));
 
     CPPUNIT_ASSERT(queue.get() != NULL);
     CPPUNIT_ASSERT(queue->getDestinationType() == cms::Destination::TEMPORARY_QUEUE);
@@ -685,10 +685,10 @@ void ActiveMQSessionTest::testCreateTempTopicByName() {
     CPPUNIT_ASSERT(connection->isStarted() == true);
 
     // Create an Auto Ack Session
-    std::auto_ptr<cms::Session> session(connection->createSession());
+    std::unique_ptr<cms::Session> session(connection->createSession());
 
     // Create a Topic
-    std::auto_ptr<cms::Topic> topic(session->createTopic("ID:TestTopic"));
+    std::unique_ptr<cms::Topic> topic(session->createTopic("ID:TestTopic"));
 
     CPPUNIT_ASSERT(topic.get() != NULL);
     CPPUNIT_ASSERT(topic->getDestinationType() == cms::Destination::TEMPORARY_TOPIC);

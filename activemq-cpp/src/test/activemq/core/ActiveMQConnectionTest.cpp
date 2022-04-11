@@ -167,7 +167,7 @@ namespace {
         TestCloseCancelsHungStartRunnable(const TestCloseCancelsHungStartRunnable&);
         TestCloseCancelsHungStartRunnable& operator=(const TestCloseCancelsHungStartRunnable);
 
-        std::auto_ptr<cms::Connection> connection;
+        std::unique_ptr<cms::Connection> connection;
 
     public:
 
@@ -187,7 +187,7 @@ namespace {
 
         virtual void run() {
             try {
-                std::auto_ptr<ActiveMQConnectionFactory> factory(new ActiveMQConnectionFactory("failover://(tcp://123.132.0.1:61616)"));
+                std::unique_ptr<ActiveMQConnectionFactory> factory(new ActiveMQConnectionFactory("failover://(tcp://123.132.0.1:61616)"));
 
                 connection.reset(factory->createConnection());
                 connection->start();
@@ -227,9 +227,9 @@ void ActiveMQConnectionTest::testExceptionInOnException() {
 
     try {
         MyExceptionListener exListener;
-        std::auto_ptr<ActiveMQConnectionFactory> factory(
+        std::unique_ptr<ActiveMQConnectionFactory> factory(
             new ActiveMQConnectionFactory("mock://mock"));
-        std::auto_ptr<cms::Connection> connection(factory->createConnection());
+        std::unique_ptr<cms::Connection> connection(factory->createConnection());
 
         connection->setExceptionListener(&exListener);
         CPPUNIT_ASSERT(exListener.waitForException(0) == false);

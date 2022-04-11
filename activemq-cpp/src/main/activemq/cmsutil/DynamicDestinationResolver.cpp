@@ -84,7 +84,7 @@ DynamicDestinationResolver::~DynamicDestinationResolver() {
 void DynamicDestinationResolver::destroy() {
 
     // Destroy the session resolvers.
-    std::auto_ptr<Iterator<SessionResolver*> > sessionResolvers(sessionResolverMap.values().iterator());
+    std::unique_ptr<Iterator<SessionResolver*> > sessionResolvers(sessionResolverMap.values().iterator());
     while (sessionResolvers->hasNext()) {
         delete sessionResolvers->next();
     }

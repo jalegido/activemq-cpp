@@ -59,7 +59,7 @@ LocalTransactionId::~LocalTransactionId() {
 
 ////////////////////////////////////////////////////////////////////////////////
 LocalTransactionId* LocalTransactionId::cloneDataStructure() const {
-    std::auto_ptr<LocalTransactionId> localTransactionId(new LocalTransactionId());
+    std::unique_ptr<LocalTransactionId> localTransactionId(new LocalTransactionId());
 
     // Copy the data from the base class or classes
     localTransactionId->copyDataStructure(this);

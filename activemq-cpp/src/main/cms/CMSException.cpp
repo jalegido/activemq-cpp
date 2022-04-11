@@ -32,7 +32,7 @@ namespace cms {
     public:
 
         std::string message;
-        std::auto_ptr<const std::exception> cause;
+        std::unique_ptr<const std::exception> cause;
         std::vector<std::pair<std::string, int> > stackTrace;
 
         CMSExceptionData() : message(), cause(), stackTrace() {

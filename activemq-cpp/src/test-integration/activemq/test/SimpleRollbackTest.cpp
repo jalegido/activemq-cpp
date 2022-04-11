@@ -57,7 +57,7 @@ void SimpleRollbackTest::testRollbacks() {
         cms::MessageProducer* producer = cmsProvider->getProducer();
         producer->setDeliveryMode(DeliveryMode::NON_PERSISTENT);
 
-        auto_ptr<cms::TextMessage> txtMessage(session->createTextMessage());
+        unique_ptr<cms::TextMessage> txtMessage(session->createTextMessage());
 
         for (unsigned int i = 0; i < IntegrationCommon::defaultMsgCount; ++i) {
             ostringstream lcStream;

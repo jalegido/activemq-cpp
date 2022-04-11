@@ -633,7 +633,7 @@ void CopyOnWriteArrayListTest::testIterator() {
     CopyOnWriteArrayList<int> list;
     populate( list, SIZE );
 
-    std::auto_ptr< Iterator<int> > i( list.iterator() );
+    std::unique_ptr< Iterator<int> > i( list.iterator() );
     int j;
     for( j = 0; i->hasNext(); j++ ) {
         CPPUNIT_ASSERT_EQUAL( j, i->next() );
@@ -648,7 +648,7 @@ void CopyOnWriteArrayListTest::testIteratorRemove() {
     CopyOnWriteArrayList<int> list;
     populate( list, SIZE );
 
-    std::auto_ptr< Iterator<int> > it( list.iterator() );
+    std::unique_ptr< Iterator<int> > it( list.iterator() );
 
     it->next();
 
@@ -664,7 +664,7 @@ void CopyOnWriteArrayListTest::testListIterator1() {
     CopyOnWriteArrayList<int> list;
     populate( list, SIZE );
 
-    std::auto_ptr< ListIterator<int> > i( list.listIterator() );
+    std::unique_ptr< ListIterator<int> > i( list.listIterator() );
     int j;
     for( j = 0; i->hasNext(); j++ ) {
         CPPUNIT_ASSERT_EQUAL( j, i->next() );
@@ -679,7 +679,7 @@ void CopyOnWriteArrayListTest::testListIterator2() {
     CopyOnWriteArrayList<int> list;
     populate( list, SIZE );
 
-    std::auto_ptr< ListIterator<int> > i( list.listIterator( 1 ) );
+    std::unique_ptr< ListIterator<int> > i( list.listIterator( 1 ) );
     int j;
     for( j = 0; i->hasNext(); j++ ) {
         CPPUNIT_ASSERT_EQUAL( j+1, i->next() );
@@ -743,7 +743,7 @@ void CopyOnWriteArrayListTest::testListIterator1IndexOutOfBoundsException() {
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should throw an IndexOutOfBoundsException",
-        std::auto_ptr< ListIterator<int> > it( list.listIterator( -1 ) ),
+        std::unique_ptr< ListIterator<int> > it( list.listIterator( -1 ) ),
         IndexOutOfBoundsException );
 }
 
@@ -756,7 +756,7 @@ void CopyOnWriteArrayListTest::testListIterator2IndexOutOfBoundsException() {
 
     CPPUNIT_ASSERT_THROW_MESSAGE(
         "Should throw an IndexOutOfBoundsException",
-        std::auto_ptr< ListIterator<int> > it( list.listIterator( 100 ) ),
+        std::unique_ptr< ListIterator<int> > it( list.listIterator( 100 ) ),
         IndexOutOfBoundsException );
 }
 

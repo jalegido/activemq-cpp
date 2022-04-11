@@ -390,7 +390,7 @@ void ActiveMQSessionKernel::dispose() {
             // We have to copy all the producers to another list since we aren't using a
             // CopyOnWriteArrayList right now.
             ArrayList<Pointer<ActiveMQProducerKernel> > producers(this->config->producers);
-            std::auto_ptr<Iterator<Pointer<ActiveMQProducerKernel> > > producerIter(producers.iterator());
+            std::unique_ptr<Iterator<Pointer<ActiveMQProducerKernel> > > producerIter(producers.iterator());
 
             while (producerIter->hasNext()) {
                 try{
@@ -727,7 +727,7 @@ cms::QueueBrowser* ActiveMQSessionKernel::createBrowser(const cms::Queue* queue,
         Pointer<ActiveMQDestination> dest(amqDestination->cloneDataStructure());
 
         // Create the QueueBrowser instance
-        std::auto_ptr<ActiveMQQueueBrowser> browser(
+        std::unique_ptr<ActiveMQQueueBrowser> browser(
             new ActiveMQQueueBrowser(this, this->getNextConsumerId(), dest,
                                      selector, this->connection->isDispatchAsync()));
 
@@ -785,7 +785,7 @@ cms::TemporaryQueue* ActiveMQSessionKernel::createTemporaryQueue() {
 
         this->checkClosed();
 
-        std::auto_ptr<commands::ActiveMQTempQueue> queue(new
+        std::unique_ptr<commands::ActiveMQTempQueue> queue(new
             commands::ActiveMQTempQueue(this->createTemporaryDestinationName()));
 
         // Register it with the Broker
@@ -803,7 +803,7 @@ cms::TemporaryTopic* ActiveMQSessionKernel::createTemporaryTopic() {
 
         this->checkClosed();
 
-        std::auto_ptr<commands::ActiveMQTempTopic> topic(new
+        std::unique_ptr<commands::ActiveMQTempTopic> topic(new
             commands::ActiveMQTempTopic(createTemporaryDestinationName()));
 
         // Register it with the Broker
@@ -1328,7 +1328,7 @@ Pointer<ActiveMQProducerKernel> ActiveMQSessionKernel::lookupProducerKernel(Poin
     this->config->producerLock.readLock().lock();
     try {
 
-        std::auto_ptr<Iterator<Pointer<ActiveMQProducerKernel> > > producerIter(this->config->producers.iterator());
+        std::unique_ptr<Iterator<Pointer<ActiveMQProducerKernel> > > producerIter(this->config->producers.iterator());
 
         while (producerIter->hasNext()) {
             Pointer<ActiveMQProducerKernel> producer = producerIter->next();

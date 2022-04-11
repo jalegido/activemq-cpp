@@ -74,7 +74,7 @@ void ResourceLifecycleManager::destroy() {
         synchronized(&connections) {
 
             // Close all the connections.
-            std::auto_ptr<decaf::util::Iterator<cms::Connection*> > connIter(connections.iterator());
+            std::unique_ptr<decaf::util::Iterator<cms::Connection*> > connIter(connections.iterator());
 
             while (connIter->hasNext()) {
                 cms::Connection* conn = connIter->next();
@@ -85,7 +85,7 @@ void ResourceLifecycleManager::destroy() {
             }
 
             // Destroy the producers.
-            std::auto_ptr<decaf::util::Iterator<cms::MessageProducer*> > prodIter(producers.iterator());
+            std::unique_ptr<decaf::util::Iterator<cms::MessageProducer*> > prodIter(producers.iterator());
 
             while (prodIter->hasNext()) {
                 cms::MessageProducer* producer = prodIter->next();
@@ -96,7 +96,7 @@ void ResourceLifecycleManager::destroy() {
             }
 
             // Destroy the consumers.
-            std::auto_ptr<decaf::util::Iterator<cms::MessageConsumer*> > consIter(consumers.iterator());
+            std::unique_ptr<decaf::util::Iterator<cms::MessageConsumer*> > consIter(consumers.iterator());
 
             while (consIter->hasNext()) {
                 cms::MessageConsumer* consumer = consIter->next();
@@ -107,7 +107,7 @@ void ResourceLifecycleManager::destroy() {
             }
 
             // Destroy the destinations.
-            std::auto_ptr<decaf::util::Iterator<cms::Destination*> > destIter(destinations.iterator());
+            std::unique_ptr<decaf::util::Iterator<cms::Destination*> > destIter(destinations.iterator());
 
             while (destIter->hasNext()) {
                 cms::Destination* dest = destIter->next();
@@ -118,7 +118,7 @@ void ResourceLifecycleManager::destroy() {
             }
 
             // Destroy the sessions.
-            std::auto_ptr<decaf::util::Iterator<cms::Session*> > sessIter(sessions.iterator());
+            std::unique_ptr<decaf::util::Iterator<cms::Session*> > sessIter(sessions.iterator());
 
             while (sessIter->hasNext()) {
                 cms::Session* session = sessIter->next();

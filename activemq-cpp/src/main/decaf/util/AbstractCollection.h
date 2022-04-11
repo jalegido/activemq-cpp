@@ -74,7 +74,7 @@ namespace util {
             if (other.isEmpty()) {
                 return;
             }
-            std::auto_ptr<Iterator<E> > iter(other.iterator());
+            std::unique_ptr<Iterator<E> > iter(other.iterator());
             while (iter->hasNext()) {
                 this->add(iter->next());
             }
@@ -92,7 +92,7 @@ namespace util {
         AbstractCollection<E>& operator= (const AbstractCollection<E>& collection) {
             this->clear();
 
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 this->add(iter->next());
             }
@@ -116,7 +116,7 @@ namespace util {
          *        if the clear operation is not supported by this collection
          */
         virtual void clear() {
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 iter->next();
                 iter->remove();
@@ -131,7 +131,7 @@ namespace util {
          */
         virtual bool contains(const E& value) const {
             bool result = false;
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 if (iter->next() == value) {
                     result = true;
@@ -150,7 +150,7 @@ namespace util {
          */
         virtual bool containsAll(const Collection<E>& collection) const {
 
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 if (!this->contains(iter->next())) {
                     return false;
@@ -198,7 +198,7 @@ namespace util {
         virtual void copy(const Collection<E>& collection) {
             this->clear();
 
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 this->add(iter->next());
             }
@@ -237,7 +237,7 @@ namespace util {
         virtual bool addAll(const Collection<E>& collection) {
 
             bool result = false;
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 result = this->add(iter->next()) || result;
             }
@@ -258,7 +258,7 @@ namespace util {
          */
         virtual bool remove(const E& value) {
 
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 if (value == iter->next()) {
                     iter->remove();
@@ -283,7 +283,7 @@ namespace util {
         virtual bool removeAll(const Collection<E>& collection) {
 
             bool result = false;
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 if (collection.contains(iter->next())) {
                     iter->remove();
@@ -308,7 +308,7 @@ namespace util {
         virtual bool retainAll(const Collection<E>& collection) {
 
             bool result = false;
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 if (!collection.contains(iter->next())) {
                     iter->remove();
@@ -331,7 +331,7 @@ namespace util {
             std::vector<E> valueArray;
             valueArray.reserve((std::size_t) this->size());
 
-            std::auto_ptr<Iterator<E> > iter(this->iterator());
+            std::unique_ptr<Iterator<E> > iter(this->iterator());
             while (iter->hasNext()) {
                 valueArray.push_back(iter->next());
             }

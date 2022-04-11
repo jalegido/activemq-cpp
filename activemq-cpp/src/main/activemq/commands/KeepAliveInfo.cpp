@@ -49,7 +49,7 @@ KeepAliveInfo::~KeepAliveInfo() {
 
 ////////////////////////////////////////////////////////////////////////////////
 KeepAliveInfo* KeepAliveInfo::cloneDataStructure() const {
-    std::auto_ptr<KeepAliveInfo> keepAliveInfo(new KeepAliveInfo());
+    std::unique_ptr<KeepAliveInfo> keepAliveInfo(new KeepAliveInfo());
 
     // Copy the data from the base class or classes
     keepAliveInfo->copyDataStructure(this);

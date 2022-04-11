@@ -49,7 +49,7 @@ IntegerResponse::~IntegerResponse() {
 
 ////////////////////////////////////////////////////////////////////////////////
 IntegerResponse* IntegerResponse::cloneDataStructure() const {
-    std::auto_ptr<IntegerResponse> integerResponse(new IntegerResponse());
+    std::unique_ptr<IntegerResponse> integerResponse(new IntegerResponse());
 
     // Copy the data from the base class or classes
     integerResponse->copyDataStructure(this);

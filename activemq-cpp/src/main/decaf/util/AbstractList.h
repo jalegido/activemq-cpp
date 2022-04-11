@@ -381,7 +381,7 @@ namespace util {
         using AbstractCollection<E>::addAll;
 
         virtual bool addAll(int index, const Collection<E>& source) {
-            std::auto_ptr<decaf::util::Iterator<E> > iter(source.iterator());
+            std::unique_ptr<decaf::util::Iterator<E> > iter(source.iterator());
             while (iter->hasNext()) {
                 this->add(index++, iter->next());
             }
@@ -401,7 +401,7 @@ namespace util {
 
         virtual int indexOf(const E& value) const {
 
-            std::auto_ptr<decaf::util::ListIterator<E> > iter(this->listIterator());
+            std::unique_ptr<decaf::util::ListIterator<E> > iter(this->listIterator());
 
             while (iter->hasNext()) {
                 if (value == iter->next()) {
@@ -414,7 +414,7 @@ namespace util {
 
         virtual int lastIndexOf(const E& value) const {
 
-            std::auto_ptr< decaf::util::ListIterator<E> > iter( this->listIterator( this->size() ) );
+            std::unique_ptr< decaf::util::ListIterator<E> > iter( this->listIterator( this->size() ) );
 
             while (iter->hasPrevious()) {
                 if (value == iter->previous()) {
@@ -428,7 +428,7 @@ namespace util {
     protected:
 
         void removeRange(int start, int end) {
-            std::auto_ptr<decaf::util::Iterator<E> > iter(this->listIterator(start));
+            std::unique_ptr<decaf::util::Iterator<E> > iter(this->listIterator(start));
             for (int i = start; i < end; i++) {
                 iter->next();
                 iter->remove();

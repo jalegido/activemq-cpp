@@ -263,7 +263,7 @@ namespace concurrent {
                 decaf::lang::Pointer<Array> oldArray = this->array;
                 int size = oldArray->size;
                 decaf::lang::Pointer<Array> newArray(new Array(*oldArray, size + collection.size()));
-                std::auto_ptr<Iterator<E> > iter(collection.iterator());
+                std::unique_ptr<Iterator<E> > iter(collection.iterator());
                 while (iter->hasNext()) {
                     newArray->elements[newArray->size++] = iter->next();
                 }
@@ -310,7 +310,7 @@ namespace concurrent {
         }
 
         virtual bool containsAll(const Collection<E>& collection) const {
-            std::auto_ptr<Iterator<E> > iter(collection.iterator());
+            std::unique_ptr<Iterator<E> > iter(collection.iterator());
             while (iter->hasNext()) {
                 E next = iter->next();
                 if (!this->contains(next)) {
@@ -336,8 +336,8 @@ namespace concurrent {
                 return false;
             }
 
-            std::auto_ptr<Iterator<E> > thisIter(this->iterator());
-            std::auto_ptr<Iterator<E> > otherIter(asList->iterator());
+            std::unique_ptr<Iterator<E> > thisIter(this->iterator());
+            std::unique_ptr<Iterator<E> > otherIter(asList->iterator());
 
             while (thisIter->hasNext()) {
                 if (!otherIter->hasNext()) {
@@ -707,7 +707,7 @@ namespace concurrent {
                     decaf::lang::System::arraycopy(oldArray->elements, 0, newArray->elements, 0, index);
                 }
 
-                std::auto_ptr<Iterator<E> > iter(collection.iterator());
+                std::unique_ptr<Iterator<E> > iter(collection.iterator());
                 int pos = index;
                 while (iter->hasNext()) {
                     newArray->elements[pos++] = iter->next();
@@ -831,7 +831,7 @@ namespace concurrent {
                 decaf::lang::Pointer<Array> buffer(new Array(collection.size()));
                 int count = 0;
 
-                std::auto_ptr<Iterator<E> > iter(collection.iterator());
+                std::unique_ptr<Iterator<E> > iter(collection.iterator());
                 while (iter->hasNext()) {
                     E value = iter->next();
                     if (this->indexOf(value) == -1) {
@@ -979,7 +979,7 @@ namespace concurrent {
                 int size = oldArray->size;
 
                 decaf::lang::Pointer<Array> buffer(new Array(*oldArray, size + collection.size()));
-                std::auto_ptr<Iterator<E> > iter(collection.iterator());
+                std::unique_ptr<Iterator<E> > iter(collection.iterator());
                 int index = 0;
                 while (iter->hasNext()) {
                     buffer->elements[size + index++] = iter->next();

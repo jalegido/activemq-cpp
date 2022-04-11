@@ -71,7 +71,7 @@ namespace util {
             bool result = false;
             if (this->size() <= collection.size()) {
 
-                std::auto_ptr<Iterator<E> > iter(this->iterator());
+                std::unique_ptr<Iterator<E> > iter(this->iterator());
                 while (iter->hasNext()) {
                     if (collection.contains(iter->next())) {
                         iter->remove();
@@ -81,7 +81,7 @@ namespace util {
 
             } else {
 
-                std::auto_ptr<Iterator<E> > iter(collection.iterator());
+                std::unique_ptr<Iterator<E> > iter(collection.iterator());
                 while (iter->hasNext()) {
                     result = this->remove(iter->next()) || result;
                 }

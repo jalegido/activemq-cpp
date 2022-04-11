@@ -263,7 +263,7 @@ void ActiveMQTransactionContext::beforeEnd() {
     // Notify each registered Synchronization that we are ending this Transaction.
     synchronized(&this->synchronizations) {
 
-        std::auto_ptr<decaf::util::Iterator< Pointer<Synchronization> > > iter(
+        std::unique_ptr<decaf::util::Iterator< Pointer<Synchronization> > > iter(
             this->synchronizations.iterator());
 
         while (iter->hasNext()) {
@@ -280,7 +280,7 @@ void ActiveMQTransactionContext::afterCommit() {
 
         Finally finalizer(&this->synchronizations);
 
-        std::auto_ptr<decaf::util::Iterator<Pointer<Synchronization> > > iter(
+        std::unique_ptr<decaf::util::Iterator<Pointer<Synchronization> > > iter(
             this->synchronizations.iterator());
 
         while (iter->hasNext()) {
@@ -297,7 +297,7 @@ void ActiveMQTransactionContext::afterRollback() {
 
         Finally finalizer( &this->synchronizations );
 
-        std::auto_ptr<decaf::util::Iterator< Pointer<Synchronization> > > iter(
+        std::unique_ptr<decaf::util::Iterator< Pointer<Synchronization> > > iter(
             this->synchronizations.iterator() );
 
         while( iter->hasNext() ) {

@@ -223,7 +223,7 @@ decaf::lang::Appendable& Writer::doAppendCharSequenceStartEnd(const decaf::lang:
         if (csq == NULL) {
             this->doWriteString(string("null").substr(start, end - start));
         } else {
-            std::auto_ptr<CharSequence> result(csq->subSequence(start, end));
+            std::unique_ptr<CharSequence> result(csq->subSequence(start, end));
             this->doWriteString(result->toString());
         }
 

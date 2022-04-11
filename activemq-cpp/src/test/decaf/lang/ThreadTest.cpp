@@ -342,7 +342,7 @@ void ThreadTest::testConstructor() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testConstructor_1() {
 
-    std::auto_ptr<Runnable> runnable( new SimpleThread( 10 ) );
+    std::unique_ptr<Runnable> runnable( new SimpleThread( 10 ) );
     Thread ct( runnable.get() );
     ct.start();
     ct.join();
@@ -351,7 +351,7 @@ void ThreadTest::testConstructor_1() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testConstructor_2() {
 
-    std::auto_ptr<Runnable> runnable( new SimpleThread( 10 ) );
+    std::unique_ptr<Runnable> runnable( new SimpleThread( 10 ) );
     Thread ct( runnable.get(), "SimpleThread_1" );
     CPPUNIT_ASSERT( ct.getName() == "SimpleThread_1" );
     ct.start();
@@ -516,7 +516,7 @@ void ThreadTest::testJoin4() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testSetPriority() {
 
-    std::auto_ptr<Runnable> runnable( new SimpleThread( 10 ) );
+    std::unique_ptr<Runnable> runnable( new SimpleThread( 10 ) );
     Thread ct( runnable.get() );
     CPPUNIT_ASSERT( ct.getPriority() == Thread::NORM_PRIORITY );
     ct.setPriority( Thread::MAX_PRIORITY );
@@ -528,7 +528,7 @@ void ThreadTest::testSetPriority() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testIsAlive() {
 
-    std::auto_ptr<SimpleThread> runnable( new SimpleThread( 500 ) );
+    std::unique_ptr<SimpleThread> runnable( new SimpleThread( 500 ) );
     Thread ct( runnable.get() );
 
     CPPUNIT_ASSERT_MESSAGE( "A thread that wasn't started is alive.", !ct.isAlive() );
@@ -608,7 +608,7 @@ void ThreadTest::testSleep2Arg() {
 
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testGetState() {
-    std::auto_ptr<SimpleThread> runnable( new SimpleThread( 1000 ) );
+    std::unique_ptr<SimpleThread> runnable( new SimpleThread( 1000 ) );
     Thread ct( runnable.get() );
 
     CPPUNIT_ASSERT_MESSAGE( "A thread that wasn't started is alive.", !ct.isAlive() );
@@ -637,7 +637,7 @@ void ThreadTest::testGetState() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testUncaughtExceptionHandler() {
 
-    std::auto_ptr<BadRunnable> runnable( new BadRunnable() );
+    std::unique_ptr<BadRunnable> runnable( new BadRunnable() );
     Thread t1( runnable.get() );
     Handler myHandler;
 
@@ -750,7 +750,7 @@ void ThreadTest::testSetName() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testInterruptSleep() {
 
-    std::auto_ptr<InterruptibleSleeper> runnable(new InterruptibleSleeper());
+    std::unique_ptr<InterruptibleSleeper> runnable(new InterruptibleSleeper());
     Thread ct( runnable.get() );
     ct.start();
 
@@ -779,7 +779,7 @@ void ThreadTest::testInterruptSleep() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testInterruptJoin() {
 
-    std::auto_ptr<InterruptibleJoiner> runnable(new InterruptibleJoiner(Thread::currentThread()));
+    std::unique_ptr<InterruptibleJoiner> runnable(new InterruptibleJoiner(Thread::currentThread()));
     Thread ct( runnable.get() );
     ct.start();
 
@@ -808,7 +808,7 @@ void ThreadTest::testInterruptJoin() {
 ////////////////////////////////////////////////////////////////////////////////
 void ThreadTest::testInterruptWait() {
 
-    std::auto_ptr<InterruptibleWaiter> runnable(new InterruptibleWaiter());
+    std::unique_ptr<InterruptibleWaiter> runnable(new InterruptibleWaiter());
     Thread ct( runnable.get() );
     ct.start();
 

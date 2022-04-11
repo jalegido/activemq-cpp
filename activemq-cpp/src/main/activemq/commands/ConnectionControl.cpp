@@ -50,7 +50,7 @@ ConnectionControl::~ConnectionControl() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ConnectionControl* ConnectionControl::cloneDataStructure() const {
-    std::auto_ptr<ConnectionControl> connectionControl(new ConnectionControl());
+    std::unique_ptr<ConnectionControl> connectionControl(new ConnectionControl());
 
     // Copy the data from the base class or classes
     connectionControl->copyDataStructure(this);

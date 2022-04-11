@@ -197,7 +197,7 @@ void AbstractListTest::testIterator() {
     SimpleList<int> list;
     list.add( 10 );
     list.add( 20 );
-    std::auto_ptr< Iterator<int> > iter( list.iterator() );
+    std::unique_ptr< Iterator<int> > iter( list.iterator() );
 
     CPPUNIT_ASSERT_EQUAL( 10, iter->next() );
     iter->remove();
@@ -216,7 +216,7 @@ void AbstractListTest::testListIterator() {
     list.add( 1 );
     list.add( 7 );
 
-    std::auto_ptr< ListIterator<int> > iter( list.listIterator() );
+    std::unique_ptr< ListIterator<int> > iter( list.listIterator() );
 
     CPPUNIT_ASSERT_MESSAGE( "Should not have previous", !iter->hasPrevious() );
     CPPUNIT_ASSERT_MESSAGE( "Should have next", iter->hasNext() );
@@ -227,13 +227,13 @@ void AbstractListTest::testListIterator() {
 
     SimpleList<std::string> list2;
     list2.add( std::string("1") );
-    std::auto_ptr< ListIterator<std::string> > iter2( list2.listIterator() );
+    std::unique_ptr< ListIterator<std::string> > iter2( list2.listIterator() );
     iter2->add( std::string("2") );
     iter2->next();
     CPPUNIT_ASSERT_MESSAGE( "Should contain two elements", list2.size() == 2 );
 
     SimpleList<int> list3;
-    std::auto_ptr< ListIterator<int> > it( list3.listIterator() );
+    std::unique_ptr< ListIterator<int> > it( list3.listIterator() );
     it->add( 1 );
     it->add( 2 );
     CPPUNIT_ASSERT_MESSAGE( "Should contain two elements", list3.size() == 2 );
@@ -246,7 +246,7 @@ void AbstractListTest::testIteratorNext() {
     t.array.push_back( "a" );
     t.array.push_back( "b" );
 
-    std::auto_ptr< Iterator<std::string> > it( t.iterator() );
+    std::unique_ptr< Iterator<std::string> > it( t.iterator() );
 
     while( it->hasNext() ) {
         it->next();
@@ -283,7 +283,7 @@ void AbstractListTest::testIteratorNext() {
 void AbstractListTest::testRemove() {
 
     MockRemoveFailureArrayList<std::string> list;
-    std::auto_ptr< Iterator<std::string> > iter( list.iterator() );
+    std::unique_ptr< Iterator<std::string> > iter( list.iterator() );
 
     iter->next();
     iter->remove();

@@ -49,14 +49,14 @@ void QueueBrowserTest::testReceiveBrowseReceive() {
 
     cms::Session* session(cmsProvider->getSession());
 
-    std::auto_ptr<cms::Queue> queue(session->createQueue("testReceiveBrowseReceive"));
+    std::unique_ptr<cms::Queue> queue(session->createQueue("testReceiveBrowseReceive"));
 
-    std::auto_ptr<cms::MessageConsumer> consumer(session->createConsumer(queue.get()));
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
 
-    std::auto_ptr<cms::TextMessage> message1(session->createTextMessage("First Message"));
-    std::auto_ptr<cms::TextMessage> message2(session->createTextMessage("Second Message"));
-    std::auto_ptr<cms::TextMessage> message3(session->createTextMessage("Third Message"));
+    std::unique_ptr<cms::TextMessage> message1(session->createTextMessage("First Message"));
+    std::unique_ptr<cms::TextMessage> message2(session->createTextMessage("Second Message"));
+    std::unique_ptr<cms::TextMessage> message3(session->createTextMessage("Third Message"));
 
     // lets consume any outstanding messages from previous test runs
     cms::Message* message;
@@ -69,12 +69,12 @@ void QueueBrowserTest::testReceiveBrowseReceive() {
     producer->send(message3.get());
 
     // Get the first.
-    std::auto_ptr<cms::TextMessage> inbound(dynamic_cast<cms::TextMessage*>(consumer->receive(1000)));
+    std::unique_ptr<cms::TextMessage> inbound(dynamic_cast<cms::TextMessage*>(consumer->receive(1000)));
     CPPUNIT_ASSERT(inbound.get() != NULL);
     CPPUNIT_ASSERT_EQUAL(message1->getText(), inbound->getText());
     consumer->close();
 
-    std::auto_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
     cms::MessageEnumeration* enumeration = browser->getEnumeration();
 
     // browse the second
@@ -117,21 +117,21 @@ void QueueBrowserTest::testReceiveBrowseReceive() {
 ////////////////////////////////////////////////////////////////////////////////
 void QueueBrowserTest::testBrowseReceive() {
 
-    std::auto_ptr<cms::TextMessage> inbound;
+    std::unique_ptr<cms::TextMessage> inbound;
 
     cms::Session* session(cmsProvider->getSession());
-    std::auto_ptr<cms::Queue> queue(session->createQueue("testBrowseReceive"));
-    std::auto_ptr<cms::TextMessage> message1(session->createTextMessage("First Message"));
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::Queue> queue(session->createQueue("testBrowseReceive"));
+    std::unique_ptr<cms::TextMessage> message1(session->createTextMessage("First Message"));
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
 
     producer->send(message1.get());
 
     // create browser first
-    std::auto_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
     cms::MessageEnumeration* enumeration = browser->getEnumeration();
 
     // create consumer
-    std::auto_ptr<cms::MessageConsumer> consumer(session->createConsumer(queue.get()));
+    std::unique_ptr<cms::MessageConsumer> consumer(session->createConsumer(queue.get()));
 
     // browse the first message
     CPPUNIT_ASSERT_MESSAGE("should have received the first message", enumeration->hasMoreMessages());
@@ -158,32 +158,32 @@ void QueueBrowserTest::testQueueBrowserWith2Consumers() {
     CPPUNIT_ASSERT(connection != NULL);
     connection->setAlwaysSyncSend(false);
 
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
-    std::auto_ptr<cms::Queue> queue(session->createQueue("testQueueBrowserWith2Consumers"));
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::CLIENT_ACKNOWLEDGE));
+    std::unique_ptr<cms::Queue> queue(session->createQueue("testQueueBrowserWith2Consumers"));
 
-    std::auto_ptr<cms::Queue> queuePrefetch10(
+    std::unique_ptr<cms::Queue> queuePrefetch10(
         session->createQueue("testQueueBrowserWith2Consumers?consumer.prefetchSize=10"));
-    std::auto_ptr<cms::Queue> queuePrefetch1(
+    std::unique_ptr<cms::Queue> queuePrefetch1(
         session->createQueue("testQueueBrowserWith2Consumers?consumer.prefetchSize=1"));
 
-    std::auto_ptr<ActiveMQConnectionFactory> factory(new ActiveMQConnectionFactory(cmsProvider->getBrokerURL()));
-    std::auto_ptr<ActiveMQConnection> connection2(dynamic_cast<ActiveMQConnection*>(factory->createConnection()));
+    std::unique_ptr<ActiveMQConnectionFactory> factory(new ActiveMQConnectionFactory(cmsProvider->getBrokerURL()));
+    std::unique_ptr<ActiveMQConnection> connection2(dynamic_cast<ActiveMQConnection*>(factory->createConnection()));
     connection2->start();
 
-    std::auto_ptr<cms::Session> session2(connection2->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<cms::Session> session2(connection2->createSession(cms::Session::AUTO_ACKNOWLEDGE));
 
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<cms::MessageConsumer> consumer(session->createConsumer(queuePrefetch10.get()));
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::MessageConsumer> consumer(session->createConsumer(queuePrefetch10.get()));
 
     producer->setDeliveryMode(cms::DeliveryMode::NON_PERSISTENT);
 
     for (int i = 0; i < numMessages; i++) {
-        std::auto_ptr<cms::TextMessage> message(
+        std::unique_ptr<cms::TextMessage> message(
                 session->createTextMessage(std::string("Message: ") + Integer::toString(i)));
         producer->send(message.get());
     }
 
-    std::auto_ptr<cms::QueueBrowser> browser(session2->createBrowser(queuePrefetch1.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session2->createBrowser(queuePrefetch1.get()));
     cms::MessageEnumeration* browserView = browser->getEnumeration();
 
     std::vector<cms::Message*> messages;
@@ -217,25 +217,25 @@ void QueueBrowserTest::testRepeatedQueueBrowserCreateDestroy() {
     ActiveMQConnection* connection = dynamic_cast<ActiveMQConnection*>(cmsProvider->getConnection());
     CPPUNIT_ASSERT(connection != NULL);
 
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
-    std::auto_ptr<cms::Queue> queue(session->createTemporaryQueue());
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::SESSION_TRANSACTED));
+    std::unique_ptr<cms::Queue> queue(session->createTemporaryQueue());
 
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<cms::TextMessage> textMessage(session->createTextMessage("Test"));
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::TextMessage> textMessage(session->createTextMessage("Test"));
     producer->setDeliveryMode(cms::DeliveryMode::NON_PERSISTENT);
     producer->send(textMessage.get());
     session->commit();
 
     connection->start();
 
-    std::auto_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
 
     for (int i = 0; i < 200; i++) {
         browser.reset(session->createBrowser(queue.get()));
         cms::MessageEnumeration* browserView = browser->getEnumeration();
 
         if (browserView->hasMoreMessages()) {
-            std::auto_ptr<cms::Message> message(browserView->nextMessage());
+            std::unique_ptr<cms::Message> message(browserView->nextMessage());
             CPPUNIT_ASSERT(message.get() != NULL);
         }
 
@@ -249,11 +249,11 @@ void QueueBrowserTest::testRepeatedQueueBrowserCreateDestroyWithMessageInQueue()
     ActiveMQConnection* connection = dynamic_cast<ActiveMQConnection*>(cmsProvider->getConnection());
     CPPUNIT_ASSERT(connection != NULL);
 
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
-    std::auto_ptr<cms::Queue> queue(session->createTemporaryQueue());
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<cms::Queue> queue(session->createTemporaryQueue());
 
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
-    std::auto_ptr<cms::TextMessage> textMessage(session->createTextMessage("Test"));
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::TextMessage> textMessage(session->createTextMessage("Test"));
 
     producer->setDeliveryMode(cms::DeliveryMode::NON_PERSISTENT);
     for (int i = 0 ; i < 10; ++i) {
@@ -262,14 +262,14 @@ void QueueBrowserTest::testRepeatedQueueBrowserCreateDestroyWithMessageInQueue()
 
     connection->start();
 
-    std::auto_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
 
     for (int i = 0; i < 200; i++) {
         browser.reset(session->createBrowser(queue.get()));
         cms::MessageEnumeration* browserView = browser->getEnumeration();
 
         if (browserView->hasMoreMessages()) {
-            std::auto_ptr<cms::Message> message(browserView->nextMessage());
+            std::unique_ptr<cms::Message> message(browserView->nextMessage());
             CPPUNIT_ASSERT(message.get() != NULL);
         }
 
@@ -285,27 +285,27 @@ void QueueBrowserTest::testBrowsingExpirationIsIgnored() {
     ActiveMQConnection* connection = dynamic_cast<ActiveMQConnection*>(cmsProvider->getConnection());
     CPPUNIT_ASSERT(connection != NULL);
 
-    std::auto_ptr<cms::Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
-    std::auto_ptr<cms::Queue> queue(session->createTemporaryQueue());
-    std::auto_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
+    std::unique_ptr<cms::Session> session(connection->createSession(cms::Session::AUTO_ACKNOWLEDGE));
+    std::unique_ptr<cms::Queue> queue(session->createTemporaryQueue());
+    std::unique_ptr<cms::MessageProducer> producer(session->createProducer(queue.get()));
 
     producer->setDeliveryMode(cms::DeliveryMode::NON_PERSISTENT);
     producer->setTimeToLive(1000);
 
     // Load the Queue with messages set to expire.
     for (int i = 1; i <= MESSAGES_TO_SEND; i++) {
-        std::auto_ptr<cms::TextMessage> textMessage(session->createTextMessage("Message: " + Integer::toString(i)));
+        std::unique_ptr<cms::TextMessage> textMessage(session->createTextMessage("Message: " + Integer::toString(i)));
         producer->send(textMessage.get());
     }
 
-    std::auto_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
+    std::unique_ptr<cms::QueueBrowser> browser(session->createBrowser(queue.get()));
     cms::MessageEnumeration* enumeration = browser->getEnumeration();
     int browsed = 0;
 
     Thread::sleep(1000);
 
     while (enumeration->hasMoreMessages()) {
-        std::auto_ptr<cms::Message> message(enumeration->nextMessage());
+        std::unique_ptr<cms::Message> message(enumeration->nextMessage());
         CPPUNIT_ASSERT(message.get() != NULL);
         browsed++;
     }

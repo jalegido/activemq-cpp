@@ -334,7 +334,7 @@ void BackupTransportPool::onBackupTransportFailure(BackupTransport* failedTransp
 
     synchronized(&this->impl->backups) {
 
-        std::auto_ptr<Iterator<Pointer<BackupTransport> > > iter(this->impl->backups.iterator());
+        std::unique_ptr<Iterator<Pointer<BackupTransport> > > iter(this->impl->backups.iterator());
 
         while (iter->hasNext()) {
             if (iter->next() == failedTransport) {

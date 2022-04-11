@@ -51,7 +51,7 @@ URI CompositeData::toURI() const {
         sb << "(";
 
         bool firstTime = true;
-        std::auto_ptr<Iterator<URI> > iter(components.iterator());
+        std::unique_ptr<Iterator<URI> > iter(components.iterator());
 
         while (iter->hasNext()) {
             if (firstTime == true) {

@@ -184,7 +184,7 @@ void XATransactionIdTest::testClone() {
 
     DummyXid myXid;
     XATransactionId id( &myXid );
-    std::auto_ptr<cms::Xid> cloned( id.clone() );
+    std::unique_ptr<cms::Xid> cloned( id.clone() );
 
     CPPUNIT_ASSERT_EQUAL( 42, id.getFormatId() );
     CPPUNIT_ASSERT_EQUAL( Xid::MAXBQUALSIZE, (int)id.getBranchQualifier().size() );

@@ -66,7 +66,7 @@ OpenwireXATransactionsTest::~OpenwireXATransactionsTest() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testCreateXAConnectionFactory() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
@@ -83,11 +83,11 @@ void OpenwireXATransactionsTest::testCreateXAConnectionFactory() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testCreateXAConnection() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
     Connection* cmsConnection = dynamic_cast<Connection*>( connection.get() );
@@ -103,14 +103,14 @@ void OpenwireXATransactionsTest::testCreateXAConnection() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testCreateXASession() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
     Session* cmsSession = dynamic_cast<Session*>( session.get() );
@@ -126,14 +126,14 @@ void OpenwireXATransactionsTest::testCreateXASession() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testGetXAResource() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
     XAResource* xaResource = session->getXAResource();
@@ -146,22 +146,22 @@ void OpenwireXATransactionsTest::testGetXAResource() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testSendReceiveOutsideTX() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
     ActiveMQXASession* amqXASession = dynamic_cast<ActiveMQXASession*>( session.get() );
     CPPUNIT_ASSERT( amqXASession != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
-    std::auto_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
 
     CPPUNIT_ASSERT( amqXASession->isAutoAcknowledge() == true );
     CPPUNIT_ASSERT( amqXASession->isTransacted() == false );
@@ -169,12 +169,12 @@ void OpenwireXATransactionsTest::testSendReceiveOutsideTX() {
     connection->start();
 
     for( int i = 0; i < 50; ++i ) {
-        std::auto_ptr<cms::Message> message( session->createTextMessage( "TEST" ) );
+        std::unique_ptr<cms::Message> message( session->createTextMessage( "TEST" ) );
         producer->send( message.get() );
     }
 
     for( int i = 0; i < 50; ++i ) {
-        std::auto_ptr<cms::Message> message( consumer->receive( 3000 ) );
+        std::unique_ptr<cms::Message> message( consumer->receive( 3000 ) );
         CPPUNIT_ASSERT( message.get() != NULL );
         CPPUNIT_ASSERT( dynamic_cast<TextMessage*>( message.get() ) != NULL );
     }
@@ -209,19 +209,19 @@ cms::Xid* OpenwireXATransactionsTest::createXid() const {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testSendReceiveTransactedBatches() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
-    std::auto_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
@@ -230,10 +230,10 @@ void OpenwireXATransactionsTest::testSendReceiveTransactedBatches() {
 
     for( int j = 0; j < batchCount; j++ ) {
 
-        std::auto_ptr<cms::Xid> txIdSend( this->createXid() );
+        std::unique_ptr<cms::Xid> txIdSend( this->createXid() );
         xaResource->start( txIdSend.get(), 0 );
 
-        std::auto_ptr<TextMessage> message( session->createTextMessage( "Batch Message" ) );
+        std::unique_ptr<TextMessage> message( session->createTextMessage( "Batch Message" ) );
 
         for( int i = 0; i < batchSize; i++ ) {
             CPPUNIT_ASSERT_NO_THROW_MESSAGE(
@@ -251,7 +251,7 @@ void OpenwireXATransactionsTest::testSendReceiveTransactedBatches() {
              "Should not have thrown an Exception for xaResource->commit",
              xaResource->commit( txIdSend.get(), false ) );
 
-        std::auto_ptr<cms::Xid> txIdRecv( this->createXid() );
+        std::unique_ptr<cms::Xid> txIdRecv( this->createXid() );
         xaResource->start( txIdRecv.get(), 0 );
 
         for( int i = 0; i < batchSize; i++ ) {
@@ -276,7 +276,7 @@ void OpenwireXATransactionsTest::testSendReceiveTransactedBatches() {
              xaResource->commit( txIdRecv.get(), false ) );
     }
 
-    std::auto_ptr<cms::Message> message;
+    std::unique_ptr<cms::Message> message;
 
     CPPUNIT_ASSERT_NO_THROW_MESSAGE(
         "Receive Shouldn't throw a Message here:",
@@ -289,30 +289,30 @@ void OpenwireXATransactionsTest::testSendReceiveTransactedBatches() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testSendRollback() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
-    std::auto_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     connection->start();
 
-    auto_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
-    auto_ptr<TextMessage> outbound2( session->createTextMessage( "Second Message" ) );
+    unique_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
+    unique_ptr<TextMessage> outbound2( session->createTextMessage( "Second Message" ) );
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // sends a message
@@ -328,7 +328,7 @@ void OpenwireXATransactionsTest::testSendRollback() {
     xaResource->start( ixId.get(), 0 );
 
     // sends a message that gets rollbacked
-    auto_ptr<cms::Message> rollback(
+    unique_ptr<cms::Message> rollback(
         session->createTextMessage( "I'm going to get rolled back." ) );
     producer->send( rollback.get() );
 
@@ -349,11 +349,11 @@ void OpenwireXATransactionsTest::testSendRollback() {
     xaResource->commit( ixId.get(), false );
 
     // receives the first message
-    auto_ptr<TextMessage> inbound1(
+    unique_ptr<TextMessage> inbound1(
         dynamic_cast<TextMessage*>( consumer->receive( 1500 ) ) );
 
     // receives the second message
-    auto_ptr<TextMessage> inbound2(
+    unique_ptr<TextMessage> inbound2(
         dynamic_cast<TextMessage*>( consumer->receive( 4000 ) ) );
 
     CPPUNIT_ASSERT( outbound1->getText() == inbound1->getText() );
@@ -366,29 +366,29 @@ void OpenwireXATransactionsTest::testSendRollback() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testSendRollbackCommitRollback() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     connection->start();
 
-    auto_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
-    auto_ptr<TextMessage> outbound2( session->createTextMessage( "Second Message" ) );
+    unique_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
+    unique_ptr<TextMessage> outbound2( session->createTextMessage( "Second Message" ) );
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // sends them and then rolls back.
@@ -415,10 +415,10 @@ void OpenwireXATransactionsTest::testSendRollbackCommitRollback() {
     ixId.reset( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
-    std::auto_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
+    std::unique_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
 
     // receives the first message
-    auto_ptr<TextMessage> inbound1(
+    unique_ptr<TextMessage> inbound1(
         dynamic_cast<TextMessage*>( consumer->receive( 1500 ) ) );
 
     CPPUNIT_ASSERT( NULL == consumer->receive( 1500 ) );
@@ -451,30 +451,30 @@ void OpenwireXATransactionsTest::testSendRollbackCommitRollback() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testWithTTLSet() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     connection->start();
 
-    auto_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
+    unique_ptr<TextMessage> outbound1( session->createTextMessage( "First Message" ) );
 
     const std::size_t NUM_MESSAGES = 50;
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // sends a message
@@ -491,11 +491,11 @@ void OpenwireXATransactionsTest::testWithTTLSet() {
     ixId.reset( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
-    std::auto_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
+    std::unique_ptr<MessageConsumer> consumer( session->createConsumer( destination.get() ) );
 
     for( std::size_t i = 0; i < NUM_MESSAGES; ++i ) {
 
-        auto_ptr<TextMessage> inbound1(
+        unique_ptr<TextMessage> inbound1(
             dynamic_cast<TextMessage*>( consumer->receive( 600000 ) ) );
         CPPUNIT_ASSERT( inbound1.get() != NULL );
         CPPUNIT_ASSERT( outbound1->getText() == inbound1->getText() );
@@ -510,24 +510,24 @@ void OpenwireXATransactionsTest::testWithTTLSet() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testXAResource_Exception1() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // prepare the sent messages without an end call.
@@ -542,24 +542,24 @@ void OpenwireXATransactionsTest::testXAResource_Exception1() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testXAResource_Exception2() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // commit the sent messages without an end call.
@@ -574,25 +574,25 @@ void OpenwireXATransactionsTest::testXAResource_Exception2() {
 ////////////////////////////////////////////////////////////////////////////////
 void OpenwireXATransactionsTest::testXAResource_Exception3() {
 
-    std::auto_ptr<XAConnectionFactory> factory(
+    std::unique_ptr<XAConnectionFactory> factory(
         XAConnectionFactory::createCMSXAConnectionFactory( getBrokerURL() ) );
     CPPUNIT_ASSERT( factory.get() != NULL );
 
-    std::auto_ptr<XAConnection> connection( factory->createXAConnection() );
+    std::unique_ptr<XAConnection> connection( factory->createXAConnection() );
     CPPUNIT_ASSERT( connection.get() != NULL );
 
-    std::auto_ptr<XASession> session( connection->createXASession() );
+    std::unique_ptr<XASession> session( connection->createXASession() );
     CPPUNIT_ASSERT( session.get() != NULL );
 
-    std::auto_ptr<Destination> destination( session->createTemporaryQueue() );
-    std::auto_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
+    std::unique_ptr<Destination> destination( session->createTemporaryQueue() );
+    std::unique_ptr<MessageProducer> producer( session->createProducer( destination.get() ) );
 
     XAResource* xaResource = session->getXAResource();
     CPPUNIT_ASSERT( xaResource != NULL );
 
     // start a new XA Transaction
-    std::auto_ptr<cms::Xid> ixId( this->createXid() );
-    std::auto_ptr<cms::Xid> ixIdOther( this->createXid() );
+    std::unique_ptr<cms::Xid> ixId( this->createXid() );
+    std::unique_ptr<cms::Xid> ixIdOther( this->createXid() );
     xaResource->start( ixId.get(), 0 );
 
     // rollback the sent messages without an end call.

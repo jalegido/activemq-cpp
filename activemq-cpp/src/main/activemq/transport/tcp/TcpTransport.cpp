@@ -56,9 +56,9 @@ namespace tcp {
 
         int connectTimeout;
 
-        std::auto_ptr<decaf::net::Socket> socket;
-        std::auto_ptr<decaf::io::DataInputStream> dataInputStream;
-        std::auto_ptr<decaf::io::DataOutputStream> dataOutputStream;
+        std::unique_ptr<decaf::net::Socket> socket;
+        std::unique_ptr<decaf::io::DataInputStream> dataInputStream;
+        std::unique_ptr<decaf::io::DataOutputStream> dataOutputStream;
 
         const decaf::net::URI& location;
 

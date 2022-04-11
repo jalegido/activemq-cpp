@@ -41,7 +41,7 @@ DefaultServerSocketFactory::~DefaultServerSocketFactory() {
 ServerSocket* DefaultServerSocketFactory::createServerSocket() {
 
     try{
-        std::auto_ptr<ServerSocket> socket( new ServerSocket() );
+        std::unique_ptr<ServerSocket> socket( new ServerSocket() );
         return socket.release();
     }
     DECAF_CATCH_RETHROW( IOException )
@@ -53,7 +53,7 @@ ServerSocket* DefaultServerSocketFactory::createServerSocket() {
 ServerSocket* DefaultServerSocketFactory::createServerSocket( int port ) {
 
     try{
-        std::auto_ptr<ServerSocket> socket( new ServerSocket( port ) );
+        std::unique_ptr<ServerSocket> socket( new ServerSocket( port ) );
         return socket.release();
     }
     DECAF_CATCH_RETHROW( IOException )
@@ -65,7 +65,7 @@ ServerSocket* DefaultServerSocketFactory::createServerSocket( int port ) {
 ServerSocket* DefaultServerSocketFactory::createServerSocket( int port, int backlog ) {
 
     try{
-        std::auto_ptr<ServerSocket> socket( new ServerSocket( port, backlog ) );
+        std::unique_ptr<ServerSocket> socket( new ServerSocket( port, backlog ) );
         return socket.release();
     }
     DECAF_CATCH_RETHROW( IOException )
@@ -77,7 +77,7 @@ ServerSocket* DefaultServerSocketFactory::createServerSocket( int port, int back
 ServerSocket* DefaultServerSocketFactory::createServerSocket( int port, int backlog, const InetAddress* address ) {
 
     try{
-        std::auto_ptr<ServerSocket> socket( new ServerSocket( port, backlog, address ) );
+        std::unique_ptr<ServerSocket> socket( new ServerSocket( port, backlog, address ) );
         return socket.release();
     }
     DECAF_CATCH_RETHROW( IOException )

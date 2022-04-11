@@ -335,23 +335,23 @@ void AbstractQueuedSynchronizerTest::testGetQueuedThreads() {
     Thread t1(&iSyncRun1);
     Thread t2(&iSyncRun2);
     try {
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
         mutex.acquire(1);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
         t1.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
         t2.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t2));
         t1.interrupt();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(!std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(!std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->contains(&t2));
         mutex.release(1);
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getQueuedThreads())->isEmpty());
         t1.join();
         t2.join();
     } catch(Exception& e){
@@ -370,23 +370,23 @@ void AbstractQueuedSynchronizerTest::testGetExclusiveQueuedThreads() {
     Thread t2(&iSyncRun2);
 
     try {
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
         mutex.acquire(1);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
         t1.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
         t2.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t2));
         t1.interrupt();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(!std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(!std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->contains(&t2));
         mutex.release(1);
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getExclusiveQueuedThreads())->isEmpty());
         t1.join();
         t2.join();
     } catch(Exception& e){
@@ -405,21 +405,21 @@ void AbstractQueuedSynchronizerTest::testGetSharedQueuedThreads() {
     Thread t2(&iSyncRun2);
 
     try {
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         mutex.acquire(1);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         t1.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         t2.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         t1.interrupt();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         mutex.release(1);
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getSharedQueuedThreads())->isEmpty());
         t1.join();
         t2.join();
     } catch(Exception& e){
@@ -1107,7 +1107,7 @@ namespace {
         virtual void run() {
             try {
                 mutex->acquire(1);
-                std::auto_ptr<Collection<Thread*> > list(mutex->getWaitingThreads(cond));
+                std::unique_ptr<Collection<Thread*> > list(mutex->getWaitingThreads(cond));
                 parent->threadAssertTrue(list->isEmpty());
                 cond->await();
                 mutex->release(1);
@@ -1139,7 +1139,7 @@ namespace {
         virtual void run() {
             try {
                 mutex->acquire(1);
-                std::auto_ptr<Collection<Thread*> > list(mutex->getWaitingThreads(cond));
+                std::unique_ptr<Collection<Thread*> > list(mutex->getWaitingThreads(cond));
                 parent->threadAssertFalse(list->isEmpty());
                 cond->await();
                 mutex->release(1);
@@ -1162,7 +1162,7 @@ void AbstractQueuedSynchronizerTest::testGetWaitingThreads() {
 
     try {
         mutex.acquire(1);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->isEmpty());
         mutex.release(1);
         t1.start();
         Thread::sleep(SHORT_DELAY_MS);
@@ -1170,14 +1170,14 @@ void AbstractQueuedSynchronizerTest::testGetWaitingThreads() {
         Thread::sleep(SHORT_DELAY_MS);
         mutex.acquire(1);
         CPPUNIT_ASSERT(mutex.hasWaiters(c));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->contains(&t2));
         c->signalAll();
         mutex.release(1);
         Thread::sleep(SHORT_DELAY_MS);
         mutex.acquire(1);
         CPPUNIT_ASSERT(!mutex.hasWaiters(c));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(mutex.getWaitingThreads(c))->isEmpty());
         mutex.release(1);
         t1.join(SHORT_DELAY_MS);
         t2.join(SHORT_DELAY_MS);

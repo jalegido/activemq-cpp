@@ -207,7 +207,7 @@ Socket* ServerSocket::accept() {
 
     try{
         ensureCreated();
-        std::auto_ptr<Socket> newSocket( new Socket() );
+        std::unique_ptr<Socket> newSocket( new Socket() );
         this->implAccept( newSocket.get() );
         return newSocket.release();
     }

@@ -34,7 +34,7 @@ namespace commands {
     private:
 
         // Map Structure to hold unmarshaled Map Data
-        mutable std::auto_ptr<util::PrimitiveMap> map;
+        mutable std::unique_ptr<util::PrimitiveMap> map;
 
     public:
 

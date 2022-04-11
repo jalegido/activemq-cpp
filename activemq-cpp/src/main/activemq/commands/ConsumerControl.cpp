@@ -49,7 +49,7 @@ ConsumerControl::~ConsumerControl() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ConsumerControl* ConsumerControl::cloneDataStructure() const {
-    std::auto_ptr<ConsumerControl> consumerControl(new ConsumerControl());
+    std::unique_ptr<ConsumerControl> consumerControl(new ConsumerControl());
 
     // Copy the data from the base class or classes
     consumerControl->copyDataStructure(this);

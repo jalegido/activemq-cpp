@@ -49,7 +49,7 @@ ProducerAck::~ProducerAck() {
 
 ////////////////////////////////////////////////////////////////////////////////
 ProducerAck* ProducerAck::cloneDataStructure() const {
-    std::auto_ptr<ProducerAck> producerAck(new ProducerAck());
+    std::unique_ptr<ProducerAck> producerAck(new ProducerAck());
 
     // Copy the data from the base class or classes
     producerAck->copyDataStructure(this);

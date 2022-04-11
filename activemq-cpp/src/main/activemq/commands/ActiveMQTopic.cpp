@@ -42,7 +42,7 @@ unsigned char ActiveMQTopic::getDataStructureType() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 ActiveMQTopic* ActiveMQTopic::cloneDataStructure() const {
-    std::auto_ptr<ActiveMQTopic> message( new ActiveMQTopic() );
+    std::unique_ptr<ActiveMQTopic> message( new ActiveMQTopic() );
     message->copyDataStructure( this );
     return message.release();
 }

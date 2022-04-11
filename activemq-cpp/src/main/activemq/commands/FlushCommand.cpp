@@ -49,7 +49,7 @@ FlushCommand::~FlushCommand() {
 
 ////////////////////////////////////////////////////////////////////////////////
 FlushCommand* FlushCommand::cloneDataStructure() const {
-    std::auto_ptr<FlushCommand> flushCommand(new FlushCommand());
+    std::unique_ptr<FlushCommand> flushCommand(new FlushCommand());
 
     // Copy the data from the base class or classes
     flushCommand->copyDataStructure(this);

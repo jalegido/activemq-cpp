@@ -118,7 +118,7 @@ void PropertiesTest::testCopy() {
 void PropertiesTest::testClone() {
 
     Properties properties1;
-    std::auto_ptr<Properties> properties2;
+    std::unique_ptr<Properties> properties2;
 
     properties1.setProperty( "A", "A" );
     properties1.setProperty( "B", "B" );

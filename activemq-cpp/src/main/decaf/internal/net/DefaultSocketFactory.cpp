@@ -43,7 +43,7 @@ Socket* DefaultSocketFactory::createSocket() {
 
     try{
 
-        std::auto_ptr<Socket> socket( new Socket() );
+        std::unique_ptr<Socket> socket( new Socket() );
 
         return socket.release();
     }
@@ -65,7 +65,7 @@ Socket* DefaultSocketFactory::createSocket( const decaf::net::InetAddress* host,
             throw SocketException( __FILE__, __LINE__, "valid port not provided" );
         }
 
-        std::auto_ptr<Socket> socket( new Socket( host, port ) );
+        std::unique_ptr<Socket> socket( new Socket( host, port ) );
 
         return socket.release();
     }
@@ -89,7 +89,7 @@ Socket* DefaultSocketFactory::createSocket( const decaf::net::InetAddress* host,
             throw SocketException( __FILE__, __LINE__, "valid port not provided" );
         }
 
-        std::auto_ptr<Socket> socket( new Socket( host, port, ifAddress, localPort ) );
+        std::unique_ptr<Socket> socket( new Socket( host, port, ifAddress, localPort ) );
 
         return socket.release();
     }
@@ -112,7 +112,7 @@ Socket* DefaultSocketFactory::createSocket( const std::string& hostname, int por
             throw SocketException( __FILE__, __LINE__, "valid port not provided" );
         }
 
-        std::auto_ptr<Socket> socket( new Socket( hostname, port ) );
+        std::unique_ptr<Socket> socket( new Socket( hostname, port ) );
 
         return socket.release();
     }
@@ -136,7 +136,7 @@ Socket* DefaultSocketFactory::createSocket( const std::string& hostname, int por
             throw SocketException( __FILE__, __LINE__, "valid port not provided" );
         }
 
-        std::auto_ptr<Socket> socket( new Socket( hostname, port, ifAddress, localPort ) );
+        std::unique_ptr<Socket> socket( new Socket( hostname, port, ifAddress, localPort ) );
 
         return socket.release();
     }

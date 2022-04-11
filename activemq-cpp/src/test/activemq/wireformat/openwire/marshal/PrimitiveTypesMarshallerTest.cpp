@@ -112,7 +112,7 @@ void PrimitiveTypesMarshallerTest::testLists() {
     PrimitiveTypesMarshaller::marshal( &myMap, marshaled );
 
     // Try and get it back from those bytes.
-    std::auto_ptr<PrimitiveMap> newMap( new PrimitiveMap );
+    std::unique_ptr<PrimitiveMap> newMap( new PrimitiveMap );
 
     try {
         PrimitiveTypesMarshaller::unmarshal( newMap.get(), marshaled );
@@ -147,7 +147,7 @@ void PrimitiveTypesMarshallerTest::testMaps() {
     PrimitiveTypesMarshaller::marshal( &myMap, marshaled );
 
     // Try and get it back from those bytes.
-    std::auto_ptr<PrimitiveMap> newMap( new PrimitiveMap );
+    std::unique_ptr<PrimitiveMap> newMap( new PrimitiveMap );
 
     try {
         PrimitiveTypesMarshaller::unmarshal( newMap.get(), marshaled );

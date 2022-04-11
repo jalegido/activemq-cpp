@@ -350,23 +350,23 @@ void ReentrantLockTest::testGetQueuedThreads() {
     Thread t2(&interruptable);
 
     try {
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         lock.lock();
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         t1.start();
         Thread::sleep( SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
         t2.start();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
         t1.interrupt();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(!std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
+        CPPUNIT_ASSERT(!std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->contains(&t2));
         lock.unlock();
         Thread::sleep(SHORT_DELAY_MS);
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getQueuedThreads())->isEmpty());
         t1.join();
         t2.join();
     } catch(Exception& e) {
@@ -627,7 +627,7 @@ void ReentrantLockTest::testLockInterruptibly2() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testAwaitIllegalMonitor() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         c->await();
         shouldThrow();
@@ -640,7 +640,7 @@ void ReentrantLockTest::testAwaitIllegalMonitor() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testSignalIllegalMonitor() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         c->signal();
         shouldThrow();
@@ -653,7 +653,7 @@ void ReentrantLockTest::testSignalIllegalMonitor() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testAwaitNanosTimeout() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.lock();
         long long t = c->awaitNanos(100);
@@ -667,7 +667,7 @@ void ReentrantLockTest::testAwaitNanosTimeout() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testAwaitTimeout() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.lock();
         c->await(SHORT_DELAY_MS, TimeUnit::MILLISECONDS);
@@ -681,7 +681,7 @@ void ReentrantLockTest::testAwaitTimeout() {
 void ReentrantLockTest::testAwaitUntilTimeout() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.lock();
         Date d;
@@ -729,7 +729,7 @@ namespace {
 void ReentrantLockTest::testAwait() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestAwaitRunnable runnable(&lock, c.get(), this);
     Thread t(&runnable);
 
@@ -785,7 +785,7 @@ void ReentrantLockTest::testGetWaitingThreadsNPE() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testHasWaitersIAE() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     ReentrantLock lock2;
     try {
         lock2.hasWaiters(c.get());
@@ -799,7 +799,7 @@ void ReentrantLockTest::testHasWaitersIAE() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testHasWaitersIMSE() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.hasWaiters(c.get());
         shouldThrow();
@@ -812,7 +812,7 @@ void ReentrantLockTest::testHasWaitersIMSE() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testGetWaitQueueLengthIAE() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     ReentrantLock lock2;
     try {
         lock2.getWaitQueueLength(c.get());
@@ -826,7 +826,7 @@ void ReentrantLockTest::testGetWaitQueueLengthIAE() {
 ////////////////////////////////////////////////////////////////////////////////
 void ReentrantLockTest::testGetWaitQueueLengthIMSE() {
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.getWaitQueueLength(c.get());
         shouldThrow();
@@ -840,7 +840,7 @@ void ReentrantLockTest::testGetWaitQueueLengthIMSE() {
 void ReentrantLockTest::testGetWaitingThreadsIAE() {
 
     PublicReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     PublicReentrantLock lock2;
     try {
         lock2.getWaitingThreads(c.get());
@@ -855,7 +855,7 @@ void ReentrantLockTest::testGetWaitingThreadsIAE() {
 void ReentrantLockTest::testGetWaitingThreadsIMSE() {
 
     PublicReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     try {
         lock.getWaitingThreads(c.get());
         shouldThrow();
@@ -904,7 +904,7 @@ namespace {
 void ReentrantLockTest::testHasWaiters() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestHasWaitersRunnable runnable(&lock, c.get(), this);
     Thread t(&runnable);
 
@@ -998,7 +998,7 @@ namespace {
 void ReentrantLockTest::testGetWaitQueueLength() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestGetWaitQueueLengthRunnable1 runnable1(&lock, c.get(), this);
     Thread t1(&runnable1);
     TestGetWaitQueueLengthRunnable2 runnable2(&lock, c.get(), this);
@@ -1052,7 +1052,7 @@ namespace {
         virtual void run() {
             try {
                 lock->lock();
-                parent->threadAssertTrue(std::auto_ptr<Collection<Thread*> >(lock->getWaitingThreads(condition))->isEmpty());
+                parent->threadAssertTrue(std::unique_ptr<Collection<Thread*> >(lock->getWaitingThreads(condition))->isEmpty());
                 condition->await();
                 lock->unlock();
             } catch(Exception& e) {
@@ -1082,7 +1082,7 @@ namespace {
         virtual void run() {
             try {
                 lock->lock();
-                parent->threadAssertFalse(std::auto_ptr<Collection<Thread*> >(lock->getWaitingThreads(condition))->isEmpty());
+                parent->threadAssertFalse(std::unique_ptr<Collection<Thread*> >(lock->getWaitingThreads(condition))->isEmpty());
                 condition->await();
                 lock->unlock();
             } catch(Exception& e) {
@@ -1096,7 +1096,7 @@ namespace {
 void ReentrantLockTest::testGetWaitingThreads() {
 
     PublicReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestGetWaitingThreadsRunnable1 runnable1(&lock, c.get(), this);
     Thread t1(&runnable1);
     TestGetWaitingThreadsRunnable2 runnable2(&lock, c.get(), this);
@@ -1104,7 +1104,7 @@ void ReentrantLockTest::testGetWaitingThreads() {
 
     try {
         lock.lock();
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->isEmpty());
         lock.unlock();
         t1.start();
         Thread::sleep(SHORT_DELAY_MS);
@@ -1112,14 +1112,14 @@ void ReentrantLockTest::testGetWaitingThreads() {
         Thread::sleep(SHORT_DELAY_MS);
         lock.lock();
         CPPUNIT_ASSERT(lock.hasWaiters(c.get()));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->contains(&t1));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->contains(&t2));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->contains(&t1));
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->contains(&t2));
         c->signalAll();
         lock.unlock();
         Thread::sleep(SHORT_DELAY_MS);
         lock.lock();
         CPPUNIT_ASSERT(!lock.hasWaiters(c.get()));
-        CPPUNIT_ASSERT(std::auto_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->isEmpty());
+        CPPUNIT_ASSERT(std::unique_ptr<Collection<Thread*> >(lock.getWaitingThreads(c.get()))->isEmpty());
         lock.unlock();
         t1.join(SHORT_DELAY_MS);
         t2.join(SHORT_DELAY_MS);
@@ -1134,7 +1134,7 @@ void ReentrantLockTest::testGetWaitingThreads() {
 void ReentrantLockTest::testAwaitUninterruptibly() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     UninterruptableThread thread(&lock, c.get());
 
     try {
@@ -1198,7 +1198,7 @@ namespace {
 void ReentrantLockTest::testAwaitInterrupt() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestAwaitInterruptRunnable runnable(&lock, c.get(), this);
     Thread t(&runnable);
 
@@ -1250,7 +1250,7 @@ namespace {
 void ReentrantLockTest::testAwaitNanosInterrupt() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestAwaitNanosInterruptRunnable runnable(&lock, c.get(), this);
     Thread t(&runnable);
 
@@ -1303,7 +1303,7 @@ namespace {
 void ReentrantLockTest::testAwaitUntilInterrupt() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestAwaitNanosInterruptRunnable runnable(&lock, c.get(), this);
     Thread t(&runnable);
 
@@ -1355,7 +1355,7 @@ namespace {
 void ReentrantLockTest::testSignalAll() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestSignalAllRunnable runnable1(&lock, c.get(), this);
     Thread t1(&runnable1);
     TestSignalAllRunnable runnable2(&lock, c.get(), this);
@@ -1449,7 +1449,7 @@ namespace {
 void ReentrantLockTest::testAwaitLockCount() {
 
     ReentrantLock lock;
-    std::auto_ptr<Condition> c(lock.newCondition());
+    std::unique_ptr<Condition> c(lock.newCondition());
     TestAwaitLockCountRunnable1 runnable1(&lock, c.get(), this);
     Thread t1(&runnable1);
     TestAwaitLockCountRunnable2 runnable2(&lock, c.get(), this);

@@ -57,7 +57,7 @@ unsigned char ActiveMQTextMessage::getDataStructureType() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 ActiveMQTextMessage* ActiveMQTextMessage::cloneDataStructure() const {
-    std::auto_ptr<ActiveMQTextMessage> message(new ActiveMQTextMessage());
+    std::unique_ptr<ActiveMQTextMessage> message(new ActiveMQTextMessage());
     message->copyDataStructure(this);
     return message.release();
 }

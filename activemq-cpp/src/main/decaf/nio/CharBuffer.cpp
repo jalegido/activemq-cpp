@@ -135,7 +135,7 @@ CharBuffer& CharBuffer::append( const CharSequence* value, int start, int end ) 
     try{
 
         if( value != NULL ) {
-            auto_ptr<CharSequence> temp( value->subSequence( start, end ) );
+            unique_ptr<CharSequence> temp( value->subSequence( start, end ) );
             this->append( temp.get() );
 
             return *this;

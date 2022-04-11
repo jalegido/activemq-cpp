@@ -61,11 +61,11 @@ namespace io{
         CPPUNIT_TEST( test_skipBytes );
         CPPUNIT_TEST_SUITE_END();
 
-        std::auto_ptr<ByteArrayOutputStream> baos;
-        std::auto_ptr<ByteArrayInputStream> bais;
+        std::unique_ptr<ByteArrayOutputStream> baos;
+        std::unique_ptr<ByteArrayInputStream> bais;
 
-        std::auto_ptr<DataOutputStream> os;
-        std::auto_ptr<DataInputStream> is;
+        std::unique_ptr<DataOutputStream> os;
+        std::unique_ptr<DataInputStream> is;
 
         std::string testData;
 

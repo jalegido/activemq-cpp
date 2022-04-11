@@ -49,7 +49,7 @@ Response::~Response() {
 
 ////////////////////////////////////////////////////////////////////////////////
 Response* Response::cloneDataStructure() const {
-    std::auto_ptr<Response> response(new Response());
+    std::unique_ptr<Response> response(new Response());
 
     // Copy the data from the base class or classes
     response->copyDataStructure(this);

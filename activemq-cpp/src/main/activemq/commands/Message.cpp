@@ -58,7 +58,7 @@ Message::~Message() {
 
 ////////////////////////////////////////////////////////////////////////////////
 Message* Message::cloneDataStructure() const {
-    std::auto_ptr<Message> message(new Message());
+    std::unique_ptr<Message> message(new Message());
 
     // Copy the data from the base class or classes
     message->copyDataStructure(this);

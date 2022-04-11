@@ -43,12 +43,12 @@ namespace commands {
         /**
          * DataInputStream wrapper around the input stream.
          */
-        mutable std::auto_ptr<decaf::io::DataInputStream> dataIn;
+        mutable std::unique_ptr<decaf::io::DataInputStream> dataIn;
 
         /**
          * DataOutputStream wrapper around the output stream.
          */
-        std::auto_ptr<decaf::io::DataOutputStream> dataOut;
+        std::unique_ptr<decaf::io::DataOutputStream> dataOut;
 
         /**
          * Tracks the actual length of the Message when compressed.

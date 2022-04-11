@@ -59,7 +59,7 @@ namespace net {
 
         ~NetworkData() {
             try {
-                std::auto_ptr<Iterator<Runnable*> > iter(shutdownTasks.iterator());
+                std::unique_ptr<Iterator<Runnable*> > iter(shutdownTasks.iterator());
                 while (iter->hasNext()) {
                     Runnable* task = iter->next();
                     try {

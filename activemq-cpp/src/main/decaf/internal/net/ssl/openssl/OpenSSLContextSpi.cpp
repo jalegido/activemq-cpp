@@ -183,7 +183,11 @@ void OpenSSLContextSpi::providerInit( SecureRandom* random ) {
 
         // General library initialization.
     #ifdef WIN32
-        CRYPTO_malloc_init();
+        #if OPENSSL_VERSION_NUMBER < 0x10100000L
+            CRYPTO_malloc_init();
+        #else
+            OPENSSL_malloc_init();
+        #endif
     #endif
         SSL_load_error_strings();
         SSL_library_init();

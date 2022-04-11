@@ -771,7 +771,7 @@ void FailoverTransport::handleConnectionControl(const Pointer<Command> control) 
         std::string reconnectStr = ctrlCommand->getReconnectTo();
         if (!reconnectStr.empty()) {
 
-            std::remove(reconnectStr.begin(), reconnectStr.end(), ' ');
+            reconnectStr.erase(std::remove(reconnectStr.begin(), reconnectStr.end(), ' '), reconnectStr.end());
 
             if (reconnectStr.length() > 0) {
                 try {
@@ -794,7 +794,7 @@ void FailoverTransport::processNewTransports(bool rebalance, std::string newTran
 
     if (!newTransports.empty()) {
 
-        std::remove(newTransports.begin(), newTransports.end(), ' ');
+        newTransports.erase(std::remove(newTransports.begin(), newTransports.end(), ' '), newTransports.end());
 
         if (newTransports.length() > 0 && isUpdateURIsSupported()) {
 

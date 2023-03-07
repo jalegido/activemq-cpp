@@ -67,7 +67,7 @@ namespace commands {
 
         virtual bool equals(const DataStructure* value) const;
 
-        virtual void clearBody() throw (cms::CMSException);
+        virtual void clearBody() throw ();
 
     public: // CMS Message
 
